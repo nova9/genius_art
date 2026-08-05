@@ -1,26 +1,90 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap");
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --color-cyber-blue: #00f0ff;
+  --color-electric-blue: #0066ff;
+  --color-studio-dark: #050505;
+  --color-mesh-grey: #0c0e14;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer utilities {
+  .chrome-text,
+  .textured-text {
+    background: linear-gradient(135deg, #f3f4f6 0%, #9ca3af 25%, #fff 50%, #4b5563 75%, #f3f4f6 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  .chrome-text-light {
+    background: linear-gradient(135deg, #111827 0%, #4b5563 25%, #030712 50%, #9ca3af 75%, #1f2937 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+  }
+
+  .chrome-border-gradient {
+    background-image: linear-gradient(135deg, #fff 0%, #9ca3af 30%, #cbd5e1 50%, #4b5563 70%, #cbd5e1 90%, #fff 100%);
+  }
+
+  .carbon-mesh {
+    background-color: #050505;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 16px 16px;
+    background-position: 0 0, 8px 8px;
+  }
+
+  .carbon-mesh-light {
+    background-color: #fafafa;
+    background-image: radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px), radial-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+    background-size: 16px 16px;
+    background-position: 0 0, 8px 8px;
+  }
+
+  .neon-blue-glow {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.05);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+  }
+
+  .bevel-metal {
+    box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.2), inset -1px -1px 1px rgba(0, 0, 0, 0.4), 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .chrome-text-blue {
+    background: linear-gradient(135deg, #e0f2fe 0%, #60a5fa 25%, #2563eb 50%, #e0f2fe 75%, #1d4ed8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glass {
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-light {
+    backdrop-filter: blur(12px);
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.05);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: #050505; font-family: "Inter", sans-serif; }
+button, a { -webkit-tap-highlight-color: transparent; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #050505; }
+::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #fff; }
