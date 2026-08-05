@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Genius Art — AI Creative Studio",
+  title: "Genius Art",
   description: "AI-driven brand content, cinematic storytelling, and immersive 3D design.",
 };
 
