@@ -179,17 +179,6 @@ export function HeroSection({
             Explore Masterpieces
           </a>
         </div>
-
-        <div className="pt-4 flex items-center justify-center gap-4">
-          <button
-            onClick={onVideoToggle}
-            className="flex items-center gap-2 px-3 py-1.5 text-[10px] font-mono text-slate-500 hover:text-slate-300 bg-slate-950/60 border border-slate-800/85 rounded-lg backdrop-blur-sm transition-colors"
-            title="Toggle cinematic background video"
-          >
-            {videoPlayState ? <Pause className="h-3 w-3" /> : <Play className="h-3 w-3" />}
-            <span>{videoPlayState ? "PAUSE CINEMATIC MP4" : "PLAY VIDEO REEL"}</span>
-          </button>
-        </div>
       </div>
 
       <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-slate-950 to-transparent pointer-events-none z-2" />
