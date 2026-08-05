@@ -4,6 +4,7 @@ import { Play, Video } from "lucide-react";
 interface FullScreenVideoPortalProps {
   isDark: boolean;
   videoUrl?: string;
+  thumbnailUrl: string;
 }
 
 const DEFAULT_VIDEO_URL = "https://youtu.be/OqRClNpVqZw?si=02az8DoeQ5A5vP8L";
@@ -36,6 +37,7 @@ function getYouTubeId(url: string) {
 export function FullScreenVideoPortal({
   isDark,
   videoUrl = DEFAULT_VIDEO_URL,
+  thumbnailUrl,
 }: FullScreenVideoPortalProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const youtubeId = useMemo(() => getYouTubeId(videoUrl), [videoUrl]);
@@ -75,9 +77,9 @@ export function FullScreenVideoPortal({
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center overflow-hidden bg-slate-950 p-6">
-              {youtubeId && (
+              {thumbnailUrl && (
                 <img
-                  src={`https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`}
+                  src={thumbnailUrl}
                   alt="Show reel preview"
                   className="absolute inset-0 h-full w-full object-cover opacity-50"
                 />

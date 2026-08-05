@@ -10,7 +10,6 @@ import { ServiceItem, PortfolioItem, TestimonialItem } from "./types";
 import { initializeCacheStore, saveCacheStore } from "./lib/cache";
 import {
   CapabilitiesSection,
-  CinematicShowcase,
   ContactSection,
   FullScreenVideoPortal,
   HeroSection,
@@ -107,13 +106,18 @@ export default function App() {
         onVideoToggle={toggleVideoPlay}
       />
 
-      <CinematicShowcase isDark={isDark} />
+      <FullScreenVideoPortal
+        isDark={isDark}
+        videoUrl="https://youtu.be/RdQyIS-mvcw"
+        thumbnailUrl="https://img.youtube.com/vi/RdQyIS-mvcw/maxresdefault.jpg"
+      />
 
       <CapabilitiesSection services={services} isDark={isDark} />
 
       <FullScreenVideoPortal
         isDark={isDark}
         videoUrl={portalVideoUrl}
+        thumbnailUrl="https://img.youtube.com/vi/OqRClNpVqZw/maxresdefault.jpg"
       />
 
       <ParallaxBanner isDark={isDark} />

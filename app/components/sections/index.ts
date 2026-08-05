@@ -1,5 +1,4 @@
 export { CapabilitiesSection } from "./CapabilitiesSection";
-export { CinematicShowcase } from "./CinematicShowcase";
 export { ContactSection } from "./ContactSection";
 export { FullScreenVideoPortal } from "./FullScreenVideoPortal";
 export { HeroSection } from "./HeroSection";
