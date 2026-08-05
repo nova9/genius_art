@@ -1,12 +1,11 @@
 import { Pause, Play, Sparkles } from "lucide-react";
-import type { RefObject } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 
 interface HeroSectionProps {
   isDark: boolean;
   scrollY: number;
   videoPlayState: boolean;
   videoRef: RefObject<HTMLVideoElement | null>;
-  canvasRef: RefObject<HTMLCanvasElement | null>;
   onVideoToggle: () => void;
 }
 
@@ -15,9 +14,100 @@ export function HeroSection({
   scrollY,
   videoPlayState,
   videoRef,
-  canvasRef,
   onVideoToggle,
 }: HeroSectionProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animationId: number;
+    let width = (canvas.width = canvas.parentElement?.clientWidth || window.innerWidth);
+    let height = (canvas.height = canvas.parentElement?.clientHeight || 600);
+
+    const handleCanvasResize = () => {
+      if (canvas.parentElement) {
+        width = canvas.width = canvas.parentElement.clientWidth;
+        height = canvas.height = canvas.parentElement.clientHeight;
+      }
+    };
+    window.addEventListener("resize", handleCanvasResize);
+
+    const particles = Array.from({ length: 60 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      radius: Math.random() * 2 + 0.5,
+      speedY: -(Math.random() * 0.3 + 0.1),
+      speedX: Math.random() * 0.2 - 0.1,
+      opacity: Math.random() * 0.6 + 0.2,
+      glowing: Math.random() > 0.7,
+    }));
+
+    const animateParticles = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      ctx.strokeStyle = isDark ? "rgba(255,255,255,0.02)" : "rgba(15,23,42,0.015)";
+      ctx.lineWidth = 1;
+
+      const gridSize = 40;
+      for (let x = 0; x < width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      particles.forEach((particle) => {
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+
+        if (particle.glowing) {
+          ctx.fillStyle = isDark
+            ? `rgba(0, 240, 255, ${particle.opacity})`
+            : `rgba(30, 144, 255, ${particle.opacity})`;
+          ctx.shadowBlur = 4;
+          ctx.shadowColor = isDark ? "#00f0ff" : "#1e90ff";
+        } else {
+          ctx.fillStyle = isDark
+            ? `rgba(255, 255, 255, ${particle.opacity})`
+            : `rgba(15, 23, 42, ${particle.opacity / 2})`;
+          ctx.shadowBlur = 0;
+        }
+
+        ctx.fill();
+        particle.y += particle.speedY;
+        particle.x += particle.speedX;
+
+        if (particle.y < 0) {
+          particle.y = height;
+          particle.x = Math.random() * width;
+        }
+        if (particle.x < 0 || particle.x > width) {
+          particle.x = Math.random() * width;
+        }
+      });
+
+      animationId = requestAnimationFrame(animateParticles);
+    };
+
+    animateParticles();
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener("resize", handleCanvasResize);
+    };
+  }, [isDark]);
+
   return (
     <section className="relative min-h-[82vh] flex items-center justify-center overflow-hidden border-b border-slate-900/60 select-none">
       <div

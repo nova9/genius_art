@@ -75,7 +75,7 @@ export function ContactSection({ services, isDark }: ContactSectionProps) {
           </div>
         </div>
 
-        <ContactForm services={services} isDark={isDark} />
+        {/* <ContactForm services={services} isDark={isDark} /> */}
       </section>
 
     </>
