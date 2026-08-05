@@ -112,6 +112,12 @@ export default function App() {
         thumbnailUrl="https://img.youtube.com/vi/RdQyIS-mvcw/maxresdefault.jpg"
       />
 
+      <FullScreenVideoPortal
+        isDark={isDark}
+        videoUrl="https://youtu.be/RdQyIS-mvcw"
+        thumbnailUrl="https://img.youtube.com/vi/RdQyIS-mvcw/maxresdefault.jpg"
+      />
+
       <CapabilitiesSection services={services} isDark={isDark} />
 
       <FullScreenVideoPortal
