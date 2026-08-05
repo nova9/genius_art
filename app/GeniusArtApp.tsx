@@ -41,13 +41,6 @@ export default function App() {
     saveCacheStore(store);
   };
 
-  const handleUpdatePortalVideo = (newUrl: string) => {
-    setPortalVideoUrl(newUrl);
-    const store = initializeCacheStore();
-    store.settings.portalVideoUrl = newUrl;
-    saveCacheStore(store);
-  };
-
   // Video ref
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -121,7 +114,6 @@ export default function App() {
       <FullScreenVideoPortal
         isDark={isDark}
         videoUrl={portalVideoUrl}
-        onUpdateVideo={handleUpdatePortalVideo}
       />
 
       <ParallaxBanner isDark={isDark} />

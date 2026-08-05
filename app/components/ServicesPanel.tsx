@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ServiceItem } from "../types";
 import { TexturedIcon } from "./TexturedIcon";
 import { motion } from "motion/react";
-import { ShieldCheck } from "lucide-react";
+import { Check } from "lucide-react";
 
 interface ServicesPanelProps {
   services: ServiceItem[];
@@ -14,8 +14,7 @@ export const ServicesPanel: React.FC<ServicesPanelProps> = ({ services, isDark }
 
   return (
     <div className="w-full flex flex-col gap-10">
-      {/* Structural Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div>
         <div className="space-y-2">
           <p className={`text-3xl sm:text-4xl md:text-5xl font-display font-black tracking-tighter uppercase leading-[0.95] max-w-xl ${
             isDark ? "text-slate-100" : "text-slate-900"
@@ -26,15 +25,8 @@ export const ServicesPanel: React.FC<ServicesPanelProps> = ({ services, isDark }
             </span>
           </p>
         </div>
-
-        {/* Offline cache awareness info */}
-        <div className="hidden lg:flex items-center gap-3 text-xs font-mono text-slate-500">
-          <ShieldCheck className="h-4 w-4 text-cyan-400" />
-          <span>Local storage enabled: specs available offline.</span>
-        </div>
       </div>
 
-      {/* Main Grid: Responsive 2-Column Service Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
         {services.map((service) => {
           const isHovered = hoveredCardId === service.id;
@@ -51,14 +43,9 @@ export const ServicesPanel: React.FC<ServicesPanelProps> = ({ services, isDark }
               onMouseEnter={() => setHoveredCardId(service.id)}
               onMouseLeave={() => setHoveredCardId(null)}
               whileHover={{ y: -4 }}
-              layoutId={`service-layout-${service.id}`}
             >
-              {/* Visual Glass Shimmer on hover */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />
-              
               <div className="space-y-6">
                 <div className="flex items-start gap-4 justify-between">
-                  {/* Premium chrome-glowing icon matched to image design */}
                   <TexturedIcon 
                     type={service.iconType} 
                     size={56}
@@ -66,7 +53,6 @@ export const ServicesPanel: React.FC<ServicesPanelProps> = ({ services, isDark }
                     className="shrink-0"
                   />
                   
-                  {/* Stats metric pill shown directly on card */}
                   {service.metricLabel && service.metricValue && (
                     <span className={`inline-flex items-center gap-1.5 text-xs font-mono font-medium px-3 py-1 rounded-full ${
                       isDark 
@@ -81,7 +67,6 @@ export const ServicesPanel: React.FC<ServicesPanelProps> = ({ services, isDark }
                   )}
                 </div>
 
-                {/* Title */}
                 <div className="space-y-2">
                   <h4 className={`text-lg md:text-xl font-display font-black uppercase tracking-tighter [word-spacing:0.25em] ${
                     isDark ? "text-white" : "text-slate-900"
@@ -93,12 +78,15 @@ export const ServicesPanel: React.FC<ServicesPanelProps> = ({ services, isDark }
                   </p>
                 </div>
 
-                {/* Features list */}
                 <div className="space-y-1.5 pt-4 border-t border-slate-800/20">
                   {service.features.map((feat, fidx) => (
                     <div key={fidx} className="flex items-start gap-2 text-xs">
-                      <span className="h-4 w-4 shrink-0 rounded bg-white/5 border border-white/20 flex items-center justify-center text-[9px] text-white/50 font-mono font-bold">
-                        //
+                      <span className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full ${
+                        isDark
+                          ? "bg-cyan-400/10 text-cyan-400"
+                          : "bg-blue-500/10 text-blue-600"
+                      }`}>
+                        <Check className="h-2.5 w-2.5" aria-hidden="true" />
                       </span>
                       <span className={isDark ? "text-slate-400" : "text-slate-600"}>
                         {feat}
