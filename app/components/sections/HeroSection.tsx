@@ -123,7 +123,7 @@ export function HeroSection({
           playsInline
           className="w-full h-full object-cover opacity-[0.38] brightness-[0.7] contrast-[1.10]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-slate-950" />
+        <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/20 to-slate-950" />
       </div>
 
       <div
@@ -181,7 +181,7 @@ export function HeroSection({
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-slate-950 to-transparent pointer-events-none z-2" />
+      <div className="absolute bottom-0 left-0 w-full h-24 bg-linear-to-t from-slate-950 to-transparent pointer-events-none z-2" />
     </section>
   );
 }

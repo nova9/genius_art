@@ -117,7 +117,7 @@ export function FullScreenVideoPortal({
                   className="absolute inset-0 h-full w-full object-cover opacity-50"
                 />
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/25 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-slate-950/90 via-slate-950/25 to-transparent" />
 
               <button
                 type="button"

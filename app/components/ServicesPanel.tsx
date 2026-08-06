@@ -37,8 +37,8 @@ export const ServicesPanel: React.FC<ServicesPanelProps> = ({ services, isDark }
               id={`service-card-${service.id}`}
               className={`p-6 md:p-8 rounded-3xl border text-left cursor-pointer transition-all duration-300 relative overflow-hidden group flex flex-col justify-between ${
                 isDark
-                  ? "bg-white/[0.02] border-white/10 hover:bg-white/[0.04] hover:border-white/20 hover:shadow-2xl hover:shadow-white/5"
-                  : "bg-black/[0.01] border-black/5 hover:bg-black/[0.03] hover:border-black/10 hover:shadow-lg"
+                  ? "bg-white/2 border-white/10 hover:bg-white/4 hover:border-white/20 hover:shadow-2xl hover:shadow-white/5"
+                  : "bg-black/1 border-black/5 hover:bg-black/3 hover:border-black/10 hover:shadow-lg"
               }`}
               onMouseEnter={() => setHoveredCardId(service.id)}
               onMouseLeave={() => setHoveredCardId(null)}

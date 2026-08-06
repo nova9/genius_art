@@ -115,7 +115,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
                 className={`group rounded-2xl border overflow-hidden cursor-pointer transition-all duration-300 ${
                   isDark
                     ? "bg-white/3 border-white/10 hover:border-white/30 hover:bg-white/10 shadow-lg"
-                    : "bg-black/[0.01] border-black/10 hover:border-black/20 hover:bg-black/5 shadow-md"
+                    : "bg-black/1 border-black/10 hover:border-black/20 hover:bg-black/5 shadow-md"
                 } hover:-translate-y-1`}
               >
                 {/* Scaled/Reflective Image container with Hover details */}
@@ -168,7 +168,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
                       </div>
 
                       {/* Hover Overlay featuring eye icon or stats summary */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 z-20">
+                      <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/40 to-transparent opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 z-20">
                         <div className="flex items-center justify-between gap-2 w-full mb-1">
                           <span className="inline-flex items-center gap-1 text-[11px] font-mono text-white/80">
                             <Eye className="h-3 w-3 animate-pulse" />
@@ -212,7 +212,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
                       </span>
 
                       {/* Hover Overlay featuring eye icon or stats summary */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                      <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                         {item.videoUrl ? (
                           <div className="flex items-center justify-between gap-2 w-full mb-1">
                             <span className="inline-flex items-center gap-1 text-[11px] font-mono text-white/80">

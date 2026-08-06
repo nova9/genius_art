@@ -26,7 +26,7 @@ export function SiteHeader({
 }: SiteHeaderProps) {
   return (
     <header className={`sticky top-0 z-40 backdrop-blur-md border-b transition-colors duration-300 ${
-      isDark ? "bg-[#050505]/80 border-white/10" : "bg-white/80 border-black/5"
+      isDark ? "bg-studio-dark/80 border-white/10" : "bg-white/80 border-black/5"
     }`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
         <a href="#" className="flex items-center group" id="brand-logo-link">

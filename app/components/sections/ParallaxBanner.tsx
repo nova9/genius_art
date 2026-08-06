@@ -52,13 +52,13 @@ export function ParallaxBanner({ isDark }: ParallaxBannerProps) {
     <section
       ref={sectionRef}
       className={`relative py-20 overflow-hidden border-y pointer-events-none ${
-        isDark ? "bg-white/[0.01] border-white/5" : "bg-black/[0.01] border-black/5"
+        isDark ? "bg-white/1 border-white/5" : "bg-black/1 border-black/5"
       }`}
     >
       <div
         ref={forwardTextRef}
         className={`whitespace-nowrap select-none font-display font-black text-6xl sm:text-9xl tracking-[0.2em] uppercase will-change-transform ${
-          isDark ? "text-white/[0.03]" : "text-black/[0.03]"
+          isDark ? "text-white/3" : "text-black/3"
         }`}
       >
         IMAGINATION UNLEASHED &bull; METALLIC VECTORS &bull; WEBGL ACTIVE SHADERS
@@ -67,7 +67,7 @@ export function ParallaxBanner({ isDark }: ParallaxBannerProps) {
       <div
         ref={reverseTextRef}
         className={`whitespace-nowrap select-none font-display font-black text-3xl sm:text-5xl tracking-[0.25em] pt-6 uppercase will-change-transform ${
-          isDark ? "text-white/[0.05]" : "text-black/[0.05]"
+          isDark ? "text-white/5" : "text-black/5"
         }`}
       >
         CHROME SHINE &bull; GENIUS COMPOSITION &bull; 0.2s LOAD TIME ACCELERATION

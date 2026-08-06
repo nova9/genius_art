@@ -27,7 +27,7 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ testimonials, isDark
       : "from-[#1e293b] to-[#0f172a] border-slate-700/60";
 
     return (
-      <div className={`relative h-14 w-14 shrink-0 rounded-full border bg-gradient-to-tr p-0.5 shadow-md flex items-center justify-center ${bgGradient}`}>
+      <div className={`relative h-14 w-14 shrink-0 rounded-full border bg-linear-to-tr p-0.5 shadow-md flex items-center justify-center ${bgGradient}`}>
         {/* Draw abstract geometric executive character */}
         <svg viewBox="0 0 40 40" className="w-10 h-10 overflow-visible">
           {/* Head & Torso */}
@@ -57,7 +57,7 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ testimonials, isDark
 
   if (!currentItem) {
     return (
-      <div className="w-full min-h-[300px] flex flex-col items-center justify-center font-mono text-xs text-white/40 border border-white/10 rounded-3xl bg-white/[0.02]">
+      <div className="w-full min-h-[300px] flex flex-col items-center justify-center font-mono text-xs text-white/40 border border-white/10 rounded-3xl bg-white/2">
         <div className="h-5 w-5 rounded-full border-2 border-t-transparent border-white/30 animate-spin mb-3" />
         INITIALIZING RECOGNITION DATABASE...
       </div>
@@ -118,7 +118,7 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ testimonials, isDark
             className={`p-6 md:p-8 rounded-3xl border relative max-w-4xl mx-auto ${
               isDark 
                 ? "bg-white/3 border-white/10 carbon-mesh" 
-                : "bg-black/[0.01] border-black/10 shadow-lg carbon-mesh-light"
+                : "bg-black/1 border-black/10 shadow-lg carbon-mesh-light"
             }`}
           >
             {/* Elegant massive Quote symbol underlay */}

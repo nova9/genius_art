@@ -804,7 +804,7 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
 
       {/* Floating reflection/ambient flare strictly client-only visual effect */}
       {isHovered && (
-        <span className="absolute inset-0 bg-gradient-to-tr from-cyan-400/0 via-white/20 to-blue-500/0 rounded-full blur-sm pointer-events-none animate-pulse" />
+        <span className="absolute inset-0 bg-linear-to-tr from-cyan-400/0 via-white/20 to-blue-500/0 rounded-full blur-sm pointer-events-none animate-pulse" />
       )}
     </div>
   );
