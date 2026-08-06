@@ -145,7 +145,7 @@ export function HeroSection({
             <br />
             MASTERPIECES
           </h2>
-          <p className="text-xs sm:text-sm font-mono text-white/50 tracking-[0.4em] uppercase">
+          <p className="text-xs sm:text-lg font-mono text-white/50 tracking-[0.4em] uppercase">
             IT&apos;S NOTHING BUT CREATIVITY
           </p>
         </div>
