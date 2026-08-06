@@ -1,4 +1,5 @@
 export { CapabilitiesSection } from "./CapabilitiesSection";
+export { ApproachSection } from "./ApproachSection";
 export { ContactSection } from "./ContactSection";
 export { FullScreenVideoPortal } from "./FullScreenVideoPortal";
 export { HeroSection } from "./HeroSection";

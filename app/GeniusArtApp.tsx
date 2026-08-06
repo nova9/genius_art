@@ -9,6 +9,7 @@ import React, { useState, useEffect } from "react";
 import { ServiceItem, PortfolioItem, TestimonialItem } from "./types";
 import { initializeCacheStore, saveCacheStore } from "./lib/cache";
 import {
+  ApproachSection,
   CapabilitiesSection,
   ContactSection,
   FullScreenVideoPortal,
@@ -99,6 +100,8 @@ export default function App() {
       />
 
       <CapabilitiesSection services={services} isDark={isDark} />
+
+      <ApproachSection isDark={isDark} />
 
       <FullScreenVideoPortal
         isDark={isDark}
