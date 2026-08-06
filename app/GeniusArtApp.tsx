@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { ServiceItem, PortfolioItem, TestimonialItem } from "./types";
 import { initializeCacheStore, saveCacheStore } from "./lib/cache";
 import {
@@ -23,7 +23,6 @@ import {
 export default function App() {
   // Theme & interactive global states
   const [isDark, setIsDark] = useState(true);
-  const [videoPlayState, setVideoPlayState] = useState(true);
   const [scrollY, setScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -33,24 +32,16 @@ export default function App() {
   const [testimonials, setTestimonials] = useState<TestimonialItem[]>([]);
   const [portalVideoUrl, setPortalVideoUrl] = useState<string>("");
 
-  const handleUpdatePortfolio = (updatedPortfolio: PortfolioItem[]) => {
-    setPortfolio(updatedPortfolio);
-    const store = initializeCacheStore();
-    store.portfolio = updatedPortfolio;
-    saveCacheStore(store);
-  };
-
-  // Video ref
-  const videoRef = useRef<HTMLVideoElement>(null);
-
   // Hydrate Cache & settings on first mount
   useEffect(() => {
-    const store = initializeCacheStore();
-    setServices(store.services);
-    setPortfolio(store.portfolio);
-    setTestimonials(store.testimonials);
-    setPortalVideoUrl(store.settings.portalVideoUrl || "https://youtu.be/OqRClNpVqZw?si=02az8DoeQ5A5vP8L");
-    setIsDark(store.settings.theme === "dark");
+    const hydrationTimer = window.setTimeout(() => {
+      const store = initializeCacheStore();
+      setServices(store.services);
+      setPortfolio(store.portfolio);
+      setTestimonials(store.testimonials);
+      setPortalVideoUrl(store.settings.portalVideoUrl || "https://youtu.be/OqRClNpVqZw?si=02az8DoeQ5A5vP8L");
+      setIsDark(store.settings.theme === "dark");
+    }, 0);
 
     // Track scroll event for parallax calculations
     const handleScroll = () => {
@@ -60,21 +51,10 @@ export default function App() {
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
+      window.clearTimeout(hydrationTimer);
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  // Video state toggle
-  const toggleVideoPlay = () => {
-    if (videoRef.current) {
-      if (videoPlayState) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play().catch(e => console.warn("Video failed auto-play reactivation", e));
-      }
-      setVideoPlayState(!videoPlayState);
-    }
-  };
 
   // Toggle Theme state & persist to local caching settings
   const handleThemeChange = () => {
@@ -101,9 +81,6 @@ export default function App() {
       <HeroSection
         isDark={isDark}
         scrollY={scrollY}
-        videoPlayState={videoPlayState}
-        videoRef={videoRef}
-        onVideoToggle={toggleVideoPlay}
       />
 
       <FullScreenVideoPortal
@@ -130,9 +107,9 @@ export default function App() {
       />
 
       <ParallaxBanner isDark={isDark} />
-      <PortfolioSection portfolio={portfolio} isDark={isDark} onUpdatePortfolio={handleUpdatePortfolio} />
+      <PortfolioSection portfolio={portfolio} isDark={isDark} />
       <TestimonialsSection testimonials={testimonials} isDark={isDark} />
-      <ContactSection services={services} isDark={isDark} />
+      <ContactSection isDark={isDark} />
       <SiteFooter isDark={isDark} />
 
     </div>

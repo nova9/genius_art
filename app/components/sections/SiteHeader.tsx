@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { Menu, Moon, Sun, X } from "lucide-react";
+import Image from "next/image";
 import geniusArtLogo from "../../assets/images/logo.png";
 import geniusArtLogoLight from "../../assets/images/logo_light.png";
 
@@ -30,10 +31,9 @@ export function SiteHeader({
     }`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
         <a href="#" className="flex items-center group" id="brand-logo-link">
-          <img
-            src={isDark ? geniusArtLogo.src : geniusArtLogoLight.src}
+          <Image
+            src={isDark ? geniusArtLogo : geniusArtLogoLight}
             alt="Genius arT"
-            referrerPolicy="no-referrer"
             className="h-9 md:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
           />
         </a>

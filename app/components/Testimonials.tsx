@@ -57,7 +57,7 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ testimonials, isDark
 
   if (!currentItem) {
     return (
-      <div className="w-full min-h-[300px] flex flex-col items-center justify-center font-mono text-xs text-white/40 border border-white/10 rounded-3xl bg-white/2">
+      <div className="w-full min-h-75 flex flex-col items-center justify-center font-mono text-xs text-white/40 border border-white/10 rounded-3xl bg-white/2">
         <div className="h-5 w-5 rounded-full border-2 border-t-transparent border-white/30 animate-spin mb-3" />
         INITIALIZING RECOGNITION DATABASE...
       </div>

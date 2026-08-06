@@ -1,22 +1,20 @@
 import React, { useState } from "react";
 import { PortfolioItem } from "../types";
 import { motion, AnimatePresence } from "motion/react";
-import { Sparkles, Calendar, Briefcase, Award, ArrowUpRight, Search, Eye, X, Zap, Video } from "lucide-react";
+import { Eye, X, Zap } from "lucide-react";
+import Image from "next/image";
 
 interface PortfolioShowcaseProps {
   portfolio: PortfolioItem[];
   isDark: boolean;
-  onUpdatePortfolio?: (updated: PortfolioItem[]) => void;
 }
 
-export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio, isDark, onUpdatePortfolio }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio, isDark }) => {
+  const selectedCategory = "All";
   const [selectedProject, setSelectedProject] = useState<PortfolioItem | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
+  const searchQuery = "";
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
-  const [activeEditVideoId, setActiveEditVideoId] = useState<string | null>(null);
-  const [tempVideoUrl, setTempVideoUrl] = useState("");
 
   const getYoutubeId = (url?: string) => {
     if (!url) return "";
@@ -31,21 +29,6 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
       videoId = url.split("youtube.com/embed/")[1]?.split("?")[0] || "";
     }
     return videoId;
-  };
-
-  const handleVideoUrlUpdate = (id: string, newUrl: string) => {
-    const updated = portfolio.map((item) => {
-      if (item.id === id) {
-        return { ...item, videoUrl: newUrl || undefined };
-      }
-      return item;
-    });
-    if (onUpdatePortfolio) {
-      onUpdatePortfolio(updated);
-    }
-    if (selectedProject && selectedProject.id === id) {
-      setSelectedProject({ ...selectedProject, videoUrl: newUrl || undefined });
-    }
   };
 
   const getYoutubeEmbedUrl = (url?: string) => {
@@ -63,7 +46,6 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
     return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0` : "";
   };
 
-  const categories = ["All", "Digital Campaign", "Cinematic Reel", "Brand Identity", "Cinematic AI Reel"];
 
   // Filter projects based on matching rules
   const filteredProjects = portfolio.filter((item) => {
@@ -98,7 +80,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
       >
         <AnimatePresence mode="popLayout">
-          {filteredProjects.map((item, index) => {
+          {filteredProjects.map((item) => {
             return (
               <motion.div
                 layout
@@ -194,10 +176,11 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
                     </>
                   ) : (
                     <>
-                      <img
+                      <Image
                         src={item.image}
                         alt={item.title}
-                        referrerPolicy="no-referrer"
+                        fill
+                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                         className="w-full h-full object-cover transform group-hover:scale-105 duration-500 ease-out brightness-[0.9] group-hover:brightness-100"
                       />
                       
@@ -325,10 +308,11 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
                       className="w-full h-full absolute inset-0 z-0"
                     />
                   ) : (
-                    <img
+                    <Image
                       src={selectedProject.image}
                       alt={selectedProject.title}
-                      referrerPolicy="no-referrer"
+                      fill
+                      sizes="(min-width: 672px) 672px, 100vw"
                       className="w-full h-full object-cover brightness-75"
                     />
                   )}

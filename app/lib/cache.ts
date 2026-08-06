@@ -179,7 +179,7 @@ export function initializeCacheStore(): LocalCacheStore {
   try {
     const raw = localStorage.getItem(CACHE_KEY);
     if (raw) {
-      const parsed = JSON.parse(raw);
+      const parsed = JSON.parse(raw) as LocalCacheStore;
       // Validate structure matches
       if (
         parsed.services &&
@@ -204,7 +204,7 @@ export function initializeCacheStore(): LocalCacheStore {
           };
         }
         // Force update the title if it is stale in the existing local cache
-        parsed.services = parsed.services.map((item: any) => {
+        parsed.services = parsed.services.map((item) => {
           if (item.id === "immersive-web") {
             item.title = "AI DRIVEN BRAND CONTENT";
             item.shortDesc =
@@ -268,8 +268,8 @@ export function initializeCacheStore(): LocalCacheStore {
           return item;
         });
         parsed.portfolio = parsed.portfolio
-          .filter((item: any) => item.id !== "cyber-eye-v1")
-          .map((item: any) => {
+          .filter((item) => item.id !== "cyber-eye-v1")
+          .map((item) => {
             if (item.id === "electric-glass") {
               item.category = "Cinematic AI Reel";
               item.client = "Dulux";

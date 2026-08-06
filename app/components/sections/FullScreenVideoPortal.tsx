@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, Play, Video } from "lucide-react";
+import Image from "next/image";
 
 interface PortalVideo {
   videoUrl: string;
@@ -111,9 +112,12 @@ export function FullScreenVideoPortal({
           ) : (
             <div className="absolute inset-0 flex items-center justify-center overflow-hidden bg-slate-950 p-6">
               {activeVideo.thumbnailUrl && (
-                <img
+                <Image
                   src={activeVideo.thumbnailUrl}
                   alt="Show reel preview"
+                  fill
+                  sizes="(min-width: 1024px) 1024px, 100vw"
+                  unoptimized
                   className="absolute inset-0 h-full w-full object-cover opacity-50"
                 />
               )}

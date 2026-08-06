@@ -671,6 +671,7 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
                 x1="26" y1="62" x2="44" y2="71"
                 stroke="url(#iceGlass)"
                 strokeWidth="1.5"
+                initial={{ opacity: 0.4 }}
                 animate={{
                   opacity: isHovered ? [0.4, 0.9, 0.4] : 0.4
                 }}
@@ -680,6 +681,7 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
                 x1="56" y1="71" x2="74" y2="62"
                 stroke="url(#iceGlass)"
                 strokeWidth="1.5"
+                initial={{ opacity: 0.4 }}
                 animate={{
                   opacity: isHovered ? [0.4, 0.9, 0.4] : 0.4
                 }}
@@ -767,6 +769,7 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
               <motion.polygon
                 points="24,42 50,55 76,42 76,43.5 50,56.5 24,43.5"
                 fill="url(#electricIris)"
+                initial={{ opacity: 0.7 }}
                 animate={{
                   opacity: isHovered ? [0.6, 1, 0.6] : 0.7
                 }}

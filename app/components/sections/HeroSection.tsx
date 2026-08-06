@@ -1,20 +1,14 @@
-import { Pause, Play, Sparkles } from "lucide-react";
-import { useEffect, useRef, type RefObject } from "react";
+import { Sparkles } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 interface HeroSectionProps {
   isDark: boolean;
   scrollY: number;
-  videoPlayState: boolean;
-  videoRef: RefObject<HTMLVideoElement | null>;
-  onVideoToggle: () => void;
 }
 
 export function HeroSection({
   isDark,
   scrollY,
-  videoPlayState,
-  videoRef,
-  onVideoToggle,
 }: HeroSectionProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -115,7 +109,6 @@ export function HeroSection({
         style={{ transform: `translateY(${scrollY * 0.4}px)` }}
       >
         <video
-          ref={videoRef}
           src="https://assets.mixkit.co/videos/preview/mixkit-abstract-laser-lights-background-loop-41851-large.mp4"
           autoPlay
           loop
