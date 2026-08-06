@@ -162,7 +162,7 @@ export function HeroSection({
               ? "bg-white text-black hover:bg-white/90 hover:shadow-lg hover:shadow-white/10"
               : "bg-black text-white hover:bg-black/90 hover:shadow-lg hover:shadow-black/10"
           }`}>
-            Initiate Alliance
+            Contact Us
           </a>
           <a href="#portfolio" className={`px-8 py-4 rounded-full font-sans text-xs font-bold tracking-[0.2em] uppercase border transition-all ${
             isDark

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight, Play, Video } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import Image from "next/image";
 
 interface PortalVideo {
@@ -75,11 +75,6 @@ export function FullScreenVideoPortal({
     >
       <div className="mx-auto max-w-7xl space-y-10 px-4 md:px-8">
         <div className="space-y-3 text-center">
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/5 px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest text-cyan-400">
-            <Video className="h-3.5 w-3.5" />
-            Show reel
-          </div>
-
           <h2 className="font-display text-3xl font-black uppercase leading-[0.95] tracking-tighter sm:text-4xl md:text-5xl">
             Our Masterpieces{" "}
             <span className={isDark ? "chrome-text" : "chrome-text-light"}>

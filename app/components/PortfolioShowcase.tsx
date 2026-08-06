@@ -143,12 +143,6 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
                         {item.year}
                       </span>
 
-                      {/* Quiet active indication */}
-                      <div className="absolute top-3 right-16 px-1.5 py-0.5 rounded bg-cyan-400 text-slate-950 font-mono text-[8px] font-black uppercase tracking-wider z-20 flex items-center gap-1">
-                        <span className="h-1 w-1 rounded-full bg-slate-950 animate-ping" />
-                        PREVIEW
-                      </div>
-
                       {/* Hover Overlay featuring eye icon or stats summary */}
                       <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/40 to-transparent opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 z-20">
                         <div className="flex items-center justify-between gap-2 w-full mb-1">
@@ -289,7 +283,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 30 }}
               transition={{ type: "spring", damping: 25, stiffness: 180 }}
-              className={`relative w-full max-w-2xl rounded-3xl border shadow-2xl overflow-hidden z-10 ${
+              className={`relative w-full max-w-5xl max-h-[calc(100vh-2rem)] overflow-y-auto rounded-3xl border shadow-2xl z-10 ${
                 isDark 
                   ? "bg-slate-900 border-slate-800 text-white" 
                   : "bg-white border-slate-200 text-slate-900"
@@ -297,7 +291,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
             >
               <div className="relative">
                 {/* Spectacular Banner Header */}
-                <div className="h-56 relative bg-slate-950">
+                <div className="relative aspect-video bg-slate-950">
                   {selectedProject.videoUrl ? (
                     <iframe
                       src={getYoutubeEmbedUrl(selectedProject.videoUrl)}
