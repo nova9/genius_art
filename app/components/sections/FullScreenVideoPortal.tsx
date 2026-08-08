@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import Image from "next/image";
 
@@ -24,6 +24,90 @@ interface FullScreenVideoPortalProps {
 }
 
 const DEFAULT_VIDEO_URL = "https://youtu.be/OqRClNpVqZw?si=02az8DoeQ5A5vP8L";
+
+function LoadingParticles({ active }: { active: boolean }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    if (!active) return;
+
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext("2d");
+    if (!canvas || !context) return;
+
+    let animationFrame = 0;
+    let width = 0;
+    let height = 0;
+    let particles: Array<{
+      x: number;
+      y: number;
+      radius: number;
+      speed: number;
+      drift: number;
+      opacity: number;
+    }> = [];
+
+    const resize = () => {
+      const bounds = canvas.getBoundingClientRect();
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      width = bounds.width;
+      height = bounds.height;
+      canvas.width = Math.round(width * pixelRatio);
+      canvas.height = Math.round(height * pixelRatio);
+      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      particles = Array.from({ length: Math.max(45, Math.round(width / 18)) }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 1.8 + 0.4,
+        speed: Math.random() * 0.35 + 0.12,
+        drift: Math.random() * 0.18 - 0.09,
+        opacity: Math.random() * 0.55 + 0.2,
+      }));
+    };
+
+    const draw = () => {
+      context.clearRect(0, 0, width, height);
+
+      for (const particle of particles) {
+        context.beginPath();
+        context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        context.fillStyle = `rgba(103, 232, 249, ${particle.opacity})`;
+        context.shadowBlur = particle.radius > 1.4 ? 8 : 0;
+        context.shadowColor = "#22d3ee";
+        context.fill();
+
+        particle.y -= particle.speed;
+        particle.x += particle.drift;
+
+        if (particle.y < -4) {
+          particle.y = height + 4;
+          particle.x = Math.random() * width;
+        }
+      }
+
+      animationFrame = requestAnimationFrame(draw);
+    };
+
+    resize();
+    window.addEventListener("resize", resize);
+    draw();
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      window.removeEventListener("resize", resize);
+    };
+  }, [active]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      className={`pointer-events-none absolute inset-0 z-2 h-full w-full transition-opacity duration-700 ${
+        active ? "opacity-100" : "opacity-0"
+      }`}
+    />
+  );
+}
 
 function getYouTubeId(url: string) {
   try {
@@ -67,6 +151,7 @@ export function FullScreenVideoPortal({
 }: FullScreenVideoPortalProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isBackgroundVideoReady, setIsBackgroundVideoReady] = useState(false);
   const slides = videos?.length ? videos : [{ videoUrl, thumbnailUrl }];
   const activeVideo = slides[activeIndex] ?? slides[0];
   const youtubeId = useMemo(() => getYouTubeId(activeVideo.videoUrl), [activeVideo.videoUrl]);
@@ -112,10 +197,15 @@ export function FullScreenVideoPortal({
                 loop
                 muted
                 playsInline
+                preload="auto"
                 aria-hidden="true"
+                onLoadStart={() => setIsBackgroundVideoReady(false)}
+                onLoadedData={() => setIsBackgroundVideoReady(true)}
+                onCanPlay={() => setIsBackgroundVideoReady(true)}
                 className="absolute inset-0 h-full w-full object-cover opacity-75"
               />
               <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-[2px]" />
+              <LoadingParticles active={!isBackgroundVideoReady} />
             </>
           )}
 

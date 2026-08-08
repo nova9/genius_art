@@ -74,6 +74,7 @@ export default function App() {
         onMenuToggle={() => setMobileMenuOpen(!mobileMenuOpen)}
         onMenuClose={() => setMobileMenuOpen(false)}
         onThemeChange={handleThemeChange}
+        disableThemeToggle
       />
 
       <HeroSection

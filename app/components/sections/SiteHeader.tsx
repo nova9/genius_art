@@ -10,6 +10,7 @@ interface SiteHeaderProps {
   onMenuToggle: () => void;
   onMenuClose: () => void;
   onThemeChange: () => void;
+  disableThemeToggle?: boolean;
 }
 
 const links = [
@@ -23,6 +24,7 @@ export function SiteHeader({
   onMenuToggle,
   onMenuClose,
   onThemeChange,
+  disableThemeToggle = false,
 }: SiteHeaderProps) {
   return (
     <header className={`sticky top-0 z-40 backdrop-blur-md border-b transition-colors duration-300 ${
@@ -55,19 +57,21 @@ export function SiteHeader({
         </nav>
 
         <div className="flex items-center gap-4">
-          <button
-            onClick={onThemeChange}
-            id="theme-toggler-btn"
-            className={`h-10 w-10 rounded-xl border transition-all hover:scale-105 active:scale-95 duration-200 flex items-center justify-center ${
-              isDark
-                ? "bg-slate-900 border-slate-800 text-yellow-500 hover:border-slate-700"
-                : "bg-slate-100 border-slate-200 text-slate-700 hover:border-slate-300"
-            }`}
-            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            {isDark ? <Sun className="h-5 w-5" aria-hidden="true" /> : <Moon className="h-5 w-5" aria-hidden="true" />}
-          </button>
+          {!disableThemeToggle && (
+            <button
+              onClick={onThemeChange}
+              id="theme-toggler-btn"
+              className={`h-10 w-10 rounded-xl border transition-all hover:scale-105 active:scale-95 duration-200 flex items-center justify-center ${
+                isDark
+                  ? "bg-slate-900 border-slate-800 text-yellow-500 hover:border-slate-700"
+                  : "bg-slate-100 border-slate-200 text-slate-700 hover:border-slate-300"
+              }`}
+              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {isDark ? <Sun className="h-5 w-5" aria-hidden="true" /> : <Moon className="h-5 w-5" aria-hidden="true" />}
+            </button>
+          )}
           <button
             onClick={onMenuToggle}
             className="md:hidden p-2.5 rounded-xl border bg-slate-900 border-slate-800 text-slate-300"

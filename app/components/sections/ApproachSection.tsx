@@ -65,7 +65,7 @@ export function ApproachSection({ isDark }: ApproachSectionProps) {
               delay: 0.12,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="max-w-xl text-[clamp(2.75rem,5.2vw,5.25rem)] font-light leading-[0.98] tracking-[-0.055em]"
+            className="max-w-xl text-[clamp(2.5rem,4.4vw,4.5rem)] font-light leading-[0.98] tracking-[-0.055em]"
           >
             One Studio.
             <br />

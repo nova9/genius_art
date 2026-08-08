@@ -103,22 +103,8 @@ export function HeroSection({
   }, [isDark]);
 
   return (
-    <section className="relative min-h-[82vh] flex items-center justify-center overflow-hidden border-b border-slate-900/60 select-none">
-      <div
-        className="absolute inset-0 z-0 pointer-events-none scale-105"
-        style={{ transform: `translateY(${scrollY * 0.4}px)` }}
-      >
-        <video
-          src="/video/hero.mp4"
-          poster="/video/hero-thumbnail.png"
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover opacity-[0.38] brightness-[0.7] contrast-[1.10]"
-        />
-        <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/20 to-slate-950" />
-      </div>
+    <section className="relative min-h-[82vh] flex items-center justify-center overflow-hidden border-b border-slate-900/60 bg-slate-950 select-none">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(0,180,255,0.08),transparent_42%)]" />
 
       <div
         className="absolute inset-0 z-1 pointer-events-none"
