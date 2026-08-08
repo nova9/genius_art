@@ -80,7 +80,6 @@ export default function App() {
           immersive
           showHeading={false}
           sharedParticleBackground
-          backgroundVideoUrl="/video/hero.mp4"
           overlayEyebrow="A Cinematic Journey"
           overlayTitle="Imagination Unleashed"
           videoUrl="https://youtu.be/RdQyIS-mvcw"

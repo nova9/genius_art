@@ -81,6 +81,7 @@ export function FullScreenVideoPortal({
     : "";
   const isDirectVideo = /\.(mp4|webm|ogg)(?:[?#].*)?$/i.test(activeVideo.videoUrl);
   const isCarousel = slides.length > 1;
+  const hasOverlay = Boolean(overlayTitle);
 
   useEffect(() => {
     if (!backgroundVideoUrl) return;
@@ -184,11 +185,11 @@ export function FullScreenVideoPortal({
             </>
           )}
 
-          <div className={backgroundVideoUrl
+          <div className={hasOverlay
             ? "absolute inset-0 z-10 flex flex-col items-center justify-center gap-5 p-4 sm:p-6 md:gap-7 md:p-8"
             : "absolute inset-0"
           }>
-          {backgroundVideoUrl && overlayTitle && (
+          {overlayTitle && (
             <div className="max-w-3xl space-y-2 text-center text-white md:space-y-3">
               {overlayEyebrow && (
                 <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.34em] text-cyan-300 sm:text-xs">
@@ -200,7 +201,7 @@ export function FullScreenVideoPortal({
               </h2>
             </div>
           )}
-          <div className={backgroundVideoUrl
+          <div className={hasOverlay
             ? "relative aspect-video w-full max-w-4xl overflow-hidden rounded-2xl border border-white/20 bg-slate-950 shadow-2xl"
             : "absolute inset-0"
           }>
