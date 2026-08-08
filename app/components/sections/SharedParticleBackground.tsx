@@ -19,6 +19,8 @@ export function SharedParticleBackground({
     if (!container || !canvas || !context) return;
 
     let animationFrame = 0;
+    let isVisible = true;
+    let lastFrameTime = 0;
     let width = 0;
     let height = 0;
     let particles: Array<{
@@ -33,7 +35,7 @@ export function SharedParticleBackground({
 
     const resize = () => {
       const bounds = container.getBoundingClientRect();
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
       width = bounds.width;
       height = container.scrollHeight;
       canvas.width = Math.round(width * pixelRatio);
@@ -43,8 +45,8 @@ export function SharedParticleBackground({
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
       const particleCount = Math.min(
-        160,
-        Math.max(60, Math.round((width * height) / 18000)),
+        100,
+        Math.max(36, Math.round((width * height) / 28000)),
       );
       particles = Array.from({ length: particleCount }, () => ({
         x: Math.random() * width,
@@ -57,26 +59,13 @@ export function SharedParticleBackground({
       }));
     };
 
-    const draw = () => {
-      context.clearRect(0, 0, width, height);
-      context.strokeStyle = isDark
-        ? "rgba(255,255,255,0.02)"
-        : "rgba(15,23,42,0.015)";
-      context.lineWidth = 1;
+    const draw = (time = 0) => {
+      if (!isVisible) return;
 
-      const gridSize = 40;
-      for (let x = 0; x < width; x += gridSize) {
-        context.beginPath();
-        context.moveTo(x, 0);
-        context.lineTo(x, height);
-        context.stroke();
-      }
-      for (let y = 0; y < height; y += gridSize) {
-        context.beginPath();
-        context.moveTo(0, y);
-        context.lineTo(width, y);
-        context.stroke();
-      }
+      animationFrame = requestAnimationFrame(draw);
+      if (time - lastFrameTime < 1000 / 30) return;
+      lastFrameTime = time;
+      context.clearRect(0, 0, width, height);
 
       for (const particle of particles) {
         context.beginPath();
@@ -108,24 +97,39 @@ export function SharedParticleBackground({
         }
       }
 
-      animationFrame = requestAnimationFrame(draw);
     };
 
     resize();
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
-    draw();
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible && !reducedMotion && !animationFrame) {
+        animationFrame = requestAnimationFrame(draw);
+      } else if (!isVisible && animationFrame) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+      }
+    });
+    visibilityObserver.observe(container);
+    if (reducedMotion) {
+      draw();
+      cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+    }
 
     return () => {
       cancelAnimationFrame(animationFrame);
       resizeObserver.disconnect();
+      visibilityObserver.disconnect();
     };
   }, [isDark]);
 
   return (
     <div
       ref={containerRef}
-      className={`relative overflow-hidden ${isDark ? "bg-slate-950" : "bg-slate-50"}`}
+      className={`shared-particle-grid relative overflow-hidden ${isDark ? "bg-slate-950" : "bg-slate-50 shared-particle-grid-light"}`}
     >
       <canvas
         ref={canvasRef}

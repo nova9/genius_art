@@ -24,7 +24,6 @@ import {
 export default function App() {
   // Theme & interactive global states
   const [isDark, setIsDark] = useState(true);
-  const [scrollY, setScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Cached datasets
@@ -42,16 +41,8 @@ export default function App() {
       setIsDark(store.settings.theme === "dark");
     }, 0);
 
-    // Track scroll event for parallax calculations
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
     return () => {
       window.clearTimeout(hydrationTimer);
-      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -81,7 +72,6 @@ export default function App() {
       <SharedParticleBackground isDark={isDark}>
         <HeroSection
           isDark={isDark}
-          scrollY={scrollY}
           sharedParticleBackground
         />
 

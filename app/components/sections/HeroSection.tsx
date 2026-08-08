@@ -1,16 +1,42 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import { Sparkles } from "lucide-react";
 
 interface HeroSectionProps {
   isDark: boolean;
-  scrollY: number;
   sharedParticleBackground?: boolean;
 }
 
 export function HeroSection({
   isDark,
-  scrollY,
   sharedParticleBackground = false,
 }: HeroSectionProps) {
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const content = contentRef.current;
+    if (!content || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let animationFrame = 0;
+    const updateParallax = () => {
+      const offset = Math.min(window.scrollY, window.innerHeight) * -0.12;
+      content.style.transform = `translate3d(0, ${offset}px, 0)`;
+      animationFrame = 0;
+    };
+    const requestUpdate = () => {
+      if (!animationFrame && window.scrollY <= window.innerHeight * 1.25) {
+        animationFrame = requestAnimationFrame(updateParallax);
+      }
+    };
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    return () => {
+      if (animationFrame) cancelAnimationFrame(animationFrame);
+      window.removeEventListener("scroll", requestUpdate);
+    };
+  }, []);
+
   return (
     <section className={`relative min-h-[82vh] flex items-center justify-center overflow-hidden select-none ${
       sharedParticleBackground ? "bg-transparent" : "border-b border-slate-900/60 bg-slate-950"
@@ -18,8 +44,8 @@ export function HeroSection({
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(0,180,255,0.08),transparent_42%)]" />
 
       <div
+        ref={contentRef}
         className="max-w-7xl mx-auto px-4 md:px-8 py-16 text-center relative z-10 space-y-8 pointer-events-auto"
-        style={{ transform: `translateY(${scrollY * -0.12}px)` }}
       >
         <div className="inline-flex items-center gap-2 px-5 py-1.5 font-sans font-bold text-[11px] uppercase tracking-[0.3em] bg-white/5 border border-white/10 rounded-full shadow-lg backdrop-blur-md text-white/70">
           <Sparkles className="h-3.5 w-3.5 text-white/80 animate-pulse" />

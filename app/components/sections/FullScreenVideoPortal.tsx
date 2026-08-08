@@ -68,6 +68,7 @@ export function FullScreenVideoPortal({
   sharedParticleBackground = false,
 }: FullScreenVideoPortalProps) {
   const backgroundVideoRef = useRef<HTMLVideoElement>(null);
+  const [shouldLoadBackgroundVideo, setShouldLoadBackgroundVideo] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isBackgroundVideoReady, setIsBackgroundVideoReady] = useState(false);
@@ -83,8 +84,27 @@ export function FullScreenVideoPortal({
   const isCarousel = slides.length > 1;
 
   useEffect(() => {
+    if (!backgroundVideoUrl) return;
+
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let idleCallback = 0;
+    const startLoading = () => setShouldLoadBackgroundVideo(true);
+
+    if ("requestIdleCallback" in window) {
+      idleCallback = window.requestIdleCallback(startLoading, { timeout: 2500 });
+    } else {
+      timer = globalThis.setTimeout(startLoading, 1800);
+    }
+
+    return () => {
+      if (idleCallback) window.cancelIdleCallback(idleCallback);
+      if (timer) globalThis.clearTimeout(timer);
+    };
+  }, [backgroundVideoUrl]);
+
+  useEffect(() => {
     const backgroundVideo = backgroundVideoRef.current;
-    if (!backgroundVideo || !backgroundVideoUrl) return;
+    if (!backgroundVideo || !backgroundVideoUrl || !shouldLoadBackgroundVideo) return;
 
     const resumeBackgroundVideo = () => {
       if (backgroundVideo.ended) backgroundVideo.currentTime = 0;
@@ -105,7 +125,7 @@ export function FullScreenVideoPortal({
       backgroundVideo.removeEventListener("ended", resumeBackgroundVideo);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [backgroundVideoUrl]);
+  }, [backgroundVideoUrl, shouldLoadBackgroundVideo]);
 
   const changeSlide = (index: number) => {
     setIsPlaying(false);
@@ -141,11 +161,11 @@ export function FullScreenVideoPortal({
             <>
               <video
                 ref={backgroundVideoRef}
-                src={backgroundVideoUrl}
+                src={shouldLoadBackgroundVideo ? backgroundVideoUrl : undefined}
                 autoPlay
                 muted
                 playsInline
-                preload="auto"
+                preload="metadata"
                 aria-hidden="true"
                 onLoadStart={() => setIsBackgroundVideoReady(false)}
                 onLoadedMetadata={() => setIsBackgroundVideoReady(true)}
