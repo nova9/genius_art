@@ -83,7 +83,6 @@ export default function App() {
           backgroundVideoUrl="/video/hero.mp4"
           overlayEyebrow="A Cinematic Journey"
           overlayTitle="Imagination Unleashed"
-          overlayDescription="Watch imagination take flight as strategy, creativity and cinematic AI come together."
           videoUrl="https://youtu.be/RdQyIS-mvcw"
           thumbnailUrl="https://img.youtube.com/vi/RdQyIS-mvcw/maxresdefault.jpg"
         />

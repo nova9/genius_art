@@ -64,7 +64,6 @@ export function FullScreenVideoPortal({
   backgroundVideoUrl,
   overlayEyebrow,
   overlayTitle,
-  overlayDescription,
   sharedParticleBackground = false,
 }: FullScreenVideoPortalProps) {
   const backgroundVideoRef = useRef<HTMLVideoElement>(null);
@@ -196,14 +195,9 @@ export function FullScreenVideoPortal({
                   {overlayEyebrow}
                 </p>
               )}
-              <h2 className="font-display text-3xl font-black uppercase leading-[0.92] tracking-tighter text-white sm:text-4xl md:text-5xl lg:text-6xl">
+              <h2 className="font-display text-3xl font-black uppercase leading-[0.92] tracking-tighter [word-spacing:0.25em] text-white sm:text-4xl md:text-5xl lg:text-6xl">
                 {overlayTitle}
               </h2>
-              {overlayDescription && (
-                <p className="mx-auto max-w-2xl text-xs leading-relaxed text-slate-300 sm:text-sm md:text-base">
-                  {overlayDescription}
-                </p>
-              )}
             </div>
           )}
           <div className={backgroundVideoUrl

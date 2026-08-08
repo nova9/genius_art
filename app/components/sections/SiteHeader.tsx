@@ -14,7 +14,7 @@ interface SiteHeaderProps {
 }
 
 const links = [
-  ["#capabilities", "Capabilities"],
+  ["#capabilities", "Services"],
   ["#portfolio", "Portfolio"],
 ] as const;
 
