@@ -574,19 +574,14 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
 
             {/* 3D Cursor vertex controller handle (connecting coordinate bubble) */}
             <g opacity={isHovered ? 1 : 0.6}>
-              <motion.line
+              <line
                 x1="72"
-                y1="34"
+                y1={isHovered ? 22 : 30}
                 x2="85"
                 y2="20"
                 stroke="#00f0ff"
                 strokeWidth="1"
                 strokeDasharray="2 2"
-                animate={{
-                  x1: isHovered ? 72 : 72,
-                  y1: isHovered ? 22 : 30,
-                }}
-                transition={{ duration: 0.35 }}
               />
               <motion.g
                 animate={{
@@ -667,26 +662,32 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
                 strokeWidth="0.75"
               />
               {/* Glass window reflections (animating on hover) */}
-              <motion.line
-                x1="26" y1="62" x2="44" y2="71"
-                stroke="url(#iceGlass)"
-                strokeWidth="1.5"
+              <motion.g
                 initial={{ opacity: 0.4 }}
                 animate={{
                   opacity: isHovered ? [0.4, 0.9, 0.4] : 0.4
                 }}
                 transition={{ duration: 1.5, repeat: Infinity }}
-              />
-              <motion.line
-                x1="56" y1="71" x2="74" y2="62"
-                stroke="url(#iceGlass)"
-                strokeWidth="1.5"
+              >
+                <line
+                  x1="26" y1="62" x2="44" y2="71"
+                  stroke="url(#iceGlass)"
+                  strokeWidth="1.5"
+                />
+              </motion.g>
+              <motion.g
                 initial={{ opacity: 0.4 }}
                 animate={{
                   opacity: isHovered ? [0.4, 0.9, 0.4] : 0.4
                 }}
                 transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}
-              />
+              >
+                <line
+                  x1="56" y1="71" x2="74" y2="62"
+                  stroke="url(#iceGlass)"
+                  strokeWidth="1.5"
+                />
+              </motion.g>
             </g>
 
             {/* Isometric door frame (highlighted neon entrance) */}
@@ -779,27 +780,26 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
 
             {/* 3D coordinate coordinate handle overlay */}
             <g opacity={isHovered ? 1 : 0.3}>
-              <motion.line
+              <line
                 x1="50" y1="26"
-                x2="50" y2="10"
+                x2="50" y2={isHovered ? 6 : 12}
                 stroke="#00f0ff"
                 strokeWidth="1"
                 strokeDasharray="2 2"
-                animate={{
-                  y2: isHovered ? 6 : 12
-                }}
-                transition={{ duration: 0.35 }}
               />
-              <motion.circle
-                cx="50" cy="10" r="3"
-                fill="url(#metalChrome)"
-                stroke="#38bdf8"
-                strokeWidth="1"
-                animate={{
-                  cy: isHovered ? 6 : 10
-                }}
+              <motion.g
+                animate={{ y: isHovered ? -4 : 0 }}
                 transition={{ duration: 0.35 }}
-              />
+              >
+                <circle
+                  cx="50"
+                  cy="10"
+                  r="3"
+                  fill="url(#metalChrome)"
+                  stroke="#38bdf8"
+                  strokeWidth="1"
+                />
+              </motion.g>
             </g>
           </g>
         )}

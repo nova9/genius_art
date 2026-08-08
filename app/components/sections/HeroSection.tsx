@@ -109,7 +109,8 @@ export function HeroSection({
         style={{ transform: `translateY(${scrollY * 0.4}px)` }}
       >
         <video
-          src="https://assets.mixkit.co/videos/preview/mixkit-abstract-laser-lights-background-loop-41851-large.mp4"
+          src="/video/hero.mp4"
+          poster="/video/hero-thumbnail.png"
           autoPlay
           loop
           muted

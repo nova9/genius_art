@@ -1,3 +1,7 @@
+"use client";
+
+import { motion, useReducedMotion } from "motion/react";
+
 interface ApproachSectionProps {
   isDark: boolean;
 }
@@ -18,27 +22,51 @@ const process = [
 ] as const;
 
 export function ApproachSection({ isDark }: ApproachSectionProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section
       id="approach"
-      className={`relative overflow-hidden border-y transition-colors duration-500 ${
+      className={`relative overflow-hidden transition-colors duration-500 ${
         isDark
-          ? "border-white/10 bg-[#070b10] text-white"
-          : "border-black/10 bg-white text-slate-950"
+          ? "bg-[#070b10] text-white"
+          : "bg-white text-slate-950"
       }`}
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_45%,rgba(0,180,255,0.07),transparent_35%)]" />
 
-      <div className="relative mx-auto grid max-w-7xl gap-14 px-4 py-20 md:px-8 md:py-28 lg:grid-cols-[0.9fr_1.45fr] lg:gap-24 lg:py-32">
-        <div>
-          <p className={`mb-8 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] ${
+      <div className="relative mx-auto max-w-7xl px-4 py-20 md:px-8 md:py-28 lg:py-32">
+        <motion.p
+          initial={shouldReduceMotion ? false : { opacity: 0, x: -16 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.8 }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+          className={`mb-10 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] ${
             isDark ? "text-white/55" : "text-black/55"
-          }`}>
-            <span className={`h-px w-7 ${isDark ? "bg-white/45" : "bg-black/45"}`} />
-            How we work
-          </p>
+          }`}
+        >
+          <motion.span
+            initial={shouldReduceMotion ? false : { scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, delay: 0.1, ease: "easeOut" }}
+            className={`h-px w-7 origin-left ${isDark ? "bg-white/45" : "bg-black/45"}`}
+          />
+          How we work
+        </motion.p>
 
-          <h2 className="max-w-xl text-[clamp(2.75rem,5.2vw,5.25rem)] font-light leading-[0.98] tracking-[-0.055em]">
+        <div className="grid gap-14 lg:grid-cols-[0.9fr_1.45fr] lg:items-stretch lg:gap-24">
+          <motion.h2
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.12,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="max-w-xl text-[clamp(2.75rem,5.2vw,5.25rem)] font-light leading-[0.98] tracking-[-0.055em]"
+          >
             One Studio.
             <br />
             Three Disciplines.
@@ -46,25 +74,41 @@ export function ApproachSection({ isDark }: ApproachSectionProps) {
             Clear Thinking and
             <br />
             Close Collaboration.
-          </h2>
-        </div>
+          </motion.h2>
 
-        <div className={`border-t ${isDark ? "border-white/20" : "border-black/20"}`}>
-          {process.map(({ title, copy }) => (
-            <article
-              key={title}
-              className={`grid gap-4 border-b py-8 sm:grid-cols-[8rem_1fr] sm:gap-9 md:py-9 ${
-                isDark ? "border-white/20" : "border-black/20"
-              }`}
-            >
-              <h3 className="text-xl font-normal tracking-[-0.025em] md:text-2xl">{title}</h3>
-              <p className={`max-w-2xl text-[15px] leading-7 md:text-base ${
-                isDark ? "text-white/58" : "text-black/58"
-              }`}>
-                {copy}
-              </p>
-            </article>
-          ))}
+          <motion.div
+            initial={shouldReduceMotion ? false : { opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.45, delay: 0.12 }}
+            className="grid content-stretch gap-10 lg:grid-rows-3 lg:gap-0"
+          >
+            {process.map(({ title, copy }, index) => (
+              <motion.article
+                key={title}
+                initial={shouldReduceMotion ? false : { opacity: 0, x: 24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.45 }}
+                transition={{
+                  duration: 0.65,
+                  delay: shouldReduceMotion ? 0 : index * 0.08,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="grid content-start gap-4 sm:grid-cols-[8rem_1fr] sm:gap-9"
+              >
+                <h3 className="text-xl font-normal tracking-[-0.025em] md:text-2xl">
+                  {title}
+                </h3>
+                <p
+                  className={`max-w-2xl text-[15px] leading-7 md:text-base ${
+                    isDark ? "text-white/58" : "text-black/58"
+                  }`}
+                >
+                  {copy}
+                </p>
+              </motion.article>
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>
