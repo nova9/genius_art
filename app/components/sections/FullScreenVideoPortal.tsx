@@ -134,10 +134,10 @@ export function FullScreenVideoPortal({
 
   return (
     <section
-      className={`w-full border-t transition-colors duration-300 ${immersive ? "py-0" : "py-16 md:py-24"} ${
+      className={`w-full transition-colors duration-300 ${immersive ? "py-0" : "py-16 md:py-24"} ${
         sharedParticleBackground
-          ? "border-white/5 bg-transparent"
-          : isDark ? "border-white/5 bg-[#030712]" : "border-slate-200 bg-slate-50"
+          ? "bg-transparent"
+          : isDark ? "border-t border-white/5 bg-[#030712]" : "border-t border-slate-200 bg-slate-50"
       }`}
     >
       <div className={immersive ? "w-full" : "mx-auto max-w-7xl space-y-10 px-4 md:px-8"}>
@@ -154,7 +154,9 @@ export function FullScreenVideoPortal({
           sharedParticleBackground ? "bg-transparent" : "bg-slate-950"
         } ${
           immersive
-            ? "h-[70svh] min-h-[28rem] border-x-0 md:h-[calc(100svh-4.75rem)] md:min-h-[38rem]"
+            ? `h-[70svh] min-h-[28rem] border-x-0 md:h-[calc(100svh-4.75rem)] md:min-h-[38rem] ${
+                sharedParticleBackground ? "border-t-0" : ""
+              }`
             : "aspect-video max-w-5xl rounded-3xl"
         }`}>
           {backgroundVideoUrl && (
