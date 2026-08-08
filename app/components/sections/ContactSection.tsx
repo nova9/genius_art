@@ -1,4 +1,4 @@
-import { MonitorCheck, PhoneCall } from "lucide-react";
+import { PhoneCall } from "lucide-react";
 
 function WhatsAppIcon({ className = "h-5 w-5" }: { className?: string }) {
   return (
@@ -18,39 +18,35 @@ export function ContactSection({ isDark }: ContactSectionProps) {
   return (
     <>
       {/* ---------------- SECTION 5: CONTACT ALLIANCE FORM ---------------- */}
-      <section id="alliance" className="max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-24 relative z-10">
+      <section id="alliance" className="max-w-7xl mx-auto px-4 md:px-8 py-20 md:py-32 relative z-10 overflow-hidden">
         
         {/* Header summary */}
-        <div className="text-center space-y-3 max-w-xl mx-auto pb-12">
-          <div className="inline-flex items-center gap-1.5 text-xs font-mono text-white/60 uppercase tracking-widest font-black">
-            <MonitorCheck className="h-3.5 w-3.5" />
-            Establish Correspondence
-          </div>
-          <h3 className="text-4xl md:text-5xl font-display font-black tracking-tighter uppercase leading-[0.95]">
+        <div className="text-center space-y-5 max-w-4xl mx-auto pb-12">
+          <h3 className="contact-title text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-black tracking-tighter uppercase leading-[0.88]">
             Let&apos;s Build a{" "}
-            <span className={`${isDark ? "chrome-text" : "chrome-text-light"}`}>
+            <span className={`contact-shimmer ${isDark ? "chrome-text" : "chrome-text-light"}`}>
               Legendary Masterpiece
             </span>
           </h3>
-          <div className="space-y-3 pt-2">
-            <p className={`text-base md:text-lg font-medium ${isDark ? "text-slate-300" : "text-slate-700"}`}>
+          <div className="space-y-5 pt-3">
+            <p className={`contact-fade-up text-lg md:text-2xl font-medium ${isDark ? "text-slate-300" : "text-slate-700"}`}>
               Connect with Genius arT
             </p>
-            <div className="font-mono text-xl sm:text-2xl font-black tracking-widest text-cyan-400 pt-1">
+            <div className="contact-fade-up contact-phone font-mono text-2xl sm:text-3xl md:text-4xl font-black tracking-widest text-cyan-400 pt-1">
               +94 77 68 66 068
             </div>
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-xl mx-auto">
+            <div className="contact-fade-up pt-4 flex flex-col sm:flex-row items-center justify-center gap-5 max-w-3xl mx-auto">
               {/* Call Button */}
               <a 
                 href="tel:+94776866068" 
                 title="Call +94 77 68 66 068"
-                className={`w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-mono text-base md:text-lg font-black tracking-wide transition-all duration-150 transform active:translate-y-1.5 ${
+                className={`w-full sm:min-w-64 inline-flex items-center justify-center gap-3 px-8 py-5 rounded-2xl font-mono text-lg md:text-xl font-black tracking-wide transition-all duration-150 transform active:translate-y-1.5 ${
                   isDark 
                     ? "bg-linear-to-b from-cyan-400 to-cyan-500 text-slate-950 border border-cyan-300/50 shadow-[0_6px_0_0_#0891b2,0_10px_18px_rgba(6,182,212,0.35)] hover:bg-cyan-300 hover:shadow-[0_4px_0_0_#0891b2,0_6px_12px_rgba(6,182,212,0.3)] hover:translate-y-0.5 active:shadow-[0_1px_0_0_#0891b2]"
                     : "bg-linear-to-b from-cyan-500 to-blue-600 text-white border border-cyan-400 shadow-[0_6px_0_0_#1d4ed8,0_10px_18px_rgba(29,78,216,0.3)] hover:from-cyan-400 hover:to-blue-500 hover:shadow-[0_4px_0_0_#1d4ed8,0_6px_12px_rgba(29,78,216,0.25)] hover:translate-y-0.5 active:shadow-[0_1px_0_0_#1d4ed8]"
                 }`}
               >
-                <PhoneCall className="h-5 w-5 md:h-6 md:w-6" />
+                <PhoneCall className="h-6 w-6 md:h-7 md:w-7" />
                 Call Us
               </a>
 
@@ -60,13 +56,13 @@ export function ContactSection({ isDark }: ContactSectionProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Chat on WhatsApp"
-                className={`w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-mono text-base md:text-lg font-black tracking-wide transition-all duration-150 transform active:translate-y-1.5 ${
+                className={`w-full sm:min-w-64 inline-flex items-center justify-center gap-3 px-8 py-5 rounded-2xl font-mono text-lg md:text-xl font-black tracking-wide transition-all duration-150 transform active:translate-y-1.5 ${
                   isDark 
                     ? "bg-linear-to-b from-emerald-400 to-emerald-500 text-slate-950 border border-emerald-300/50 shadow-[0_6px_0_0_#047857,0_10px_18px_rgba(16,185,129,0.35)] hover:bg-emerald-300 hover:shadow-[0_4px_0_0_#047857,0_6px_12px_rgba(16,185,129,0.3)] hover:translate-y-0.5 active:shadow-[0_1px_0_0_#047857]"
                     : "bg-linear-to-b from-emerald-500 to-green-600 text-white border border-emerald-400 shadow-[0_6px_0_0_#15803d,0_10px_18px_rgba(21,128,61,0.3)] hover:from-emerald-400 hover:to-green-500 hover:shadow-[0_4px_0_0_#15803d,0_6px_12px_rgba(21,128,61,0.25)] hover:translate-y-0.5 active:shadow-[0_1px_0_0_#15803d]"
                 }`}
               >
-                <WhatsAppIcon className="h-5 w-5 md:h-6 md:w-6 fill-current" />
+                <WhatsAppIcon className="h-6 w-6 md:h-7 md:w-7 fill-current" />
                 WhatsApp Us
               </a>
             </div>

@@ -84,6 +84,34 @@
 html { scroll-behavior: smooth; }
 body { margin: 0; background: #050505; font-family: "Inter", sans-serif; }
 button, a { -webkit-tap-highlight-color: transparent; }
+
+@keyframes contact-title-in {
+  from { opacity: 0; transform: translateY(28px); filter: blur(8px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes contact-shine {
+  0%, 20% { background-position: 200% center; }
+  70%, 100% { background-position: -100% center; }
+}
+
+@keyframes contact-pulse {
+  0%, 100% { text-shadow: 0 0 0 rgba(34, 211, 238, 0); }
+  50% { text-shadow: 0 0 22px rgba(34, 211, 238, 0.45); }
+}
+
+.contact-title { animation: contact-title-in 900ms cubic-bezier(.16, 1, .3, 1) both; }
+.contact-shimmer { animation: contact-shine 5s linear infinite; }
+.contact-fade-up { animation: contact-title-in 800ms 180ms cubic-bezier(.16, 1, .3, 1) both; }
+.contact-phone { animation-name: contact-title-in, contact-pulse; animation-duration: 800ms, 2.8s; animation-delay: 240ms, 1s; animation-timing-function: cubic-bezier(.16, 1, .3, 1), ease-in-out; animation-fill-mode: both; animation-iteration-count: 1, infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-title,
+  .contact-shimmer,
+  .contact-fade-up,
+  .contact-phone { animation: none; }
+}
+
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #050505; }
 ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }

@@ -6,7 +6,7 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { ServiceItem, PortfolioItem, TestimonialItem } from "./types";
+import { ServiceItem, PortfolioItem } from "./types";
 import { initializeCacheStore, saveCacheStore } from "./lib/cache";
 import {
   ApproachSection,
@@ -18,7 +18,6 @@ import {
   PortfolioSection,
   SiteFooter,
   SiteHeader,
-  TestimonialsSection,
 } from "./components/sections";
 
 export default function App() {
@@ -30,7 +29,6 @@ export default function App() {
   // Cached datasets
   const [services, setServices] = useState<ServiceItem[]>([]);
   const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
-  const [testimonials, setTestimonials] = useState<TestimonialItem[]>([]);
   const [portalVideoUrl, setPortalVideoUrl] = useState<string>("");
 
   // Hydrate Cache & settings on first mount
@@ -39,7 +37,6 @@ export default function App() {
       const store = initializeCacheStore();
       setServices(store.services);
       setPortfolio(store.portfolio);
-      setTestimonials(store.testimonials);
       setPortalVideoUrl(store.settings.portalVideoUrl || "https://youtu.be/OqRClNpVqZw?si=02az8DoeQ5A5vP8L");
       setIsDark(store.settings.theme === "dark");
     }, 0);
@@ -87,6 +84,9 @@ export default function App() {
       <FullScreenVideoPortal
         isDark={isDark}
         loop
+        autoPlayDirect
+        immersive
+        showHeading={false}
         videos={[
           {
             videoUrl: "/video/hero.mp4",
@@ -107,11 +107,11 @@ export default function App() {
         isDark={isDark}
         videoUrl={portalVideoUrl}
         thumbnailUrl="https://img.youtube.com/vi/OqRClNpVqZw/maxresdefault.jpg"
+        headingSuffix="in a Minute"
       />
 
       <ParallaxBanner isDark={isDark} />
       <PortfolioSection portfolio={portfolio} isDark={isDark} />
-      <TestimonialsSection testimonials={testimonials} isDark={isDark} />
       <ContactSection isDark={isDark} />
       <SiteFooter isDark={isDark} />
 

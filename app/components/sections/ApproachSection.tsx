@@ -4,17 +4,14 @@ interface ApproachSectionProps {
 
 const process = [
   {
-    number: "01",
     title: "Discover",
     copy: "We uncover valuable insights by understanding your business objectives, target audience and market dynamics, ensuring every creative decision is informed.",
   },
   {
-    number: "02",
     title: "Develop",
     copy: "We explore creative concepts and visual directions, refining the strongest ideas into strategic solutions aligned with your business objectives and brand vision.",
   },
   {
-    number: "03",
     title: "Produce",
     copy: "Genius arT brings ideas to life through cinematic AI-powered content and advanced production technologies, creating meaningful marketing assets that engage audiences, respect your budget and strengthen your brand.",
   },
@@ -53,14 +50,13 @@ export function ApproachSection({ isDark }: ApproachSectionProps) {
         </div>
 
         <div className={`border-t ${isDark ? "border-white/20" : "border-black/20"}`}>
-          {process.map(({ number, title, copy }) => (
+          {process.map(({ title, copy }) => (
             <article
-              key={number}
-              className={`grid gap-4 border-b py-8 sm:grid-cols-[3rem_8rem_1fr] sm:gap-7 md:py-9 ${
+              key={title}
+              className={`grid gap-4 border-b py-8 sm:grid-cols-[8rem_1fr] sm:gap-9 md:py-9 ${
                 isDark ? "border-white/20" : "border-black/20"
               }`}
             >
-              <span className="pt-1 font-mono text-[11px] text-cyan-500">{number}</span>
               <h3 className="text-xl font-normal tracking-[-0.025em] md:text-2xl">{title}</h3>
               <p className={`max-w-2xl text-[15px] leading-7 md:text-base ${
                 isDark ? "text-white/58" : "text-black/58"

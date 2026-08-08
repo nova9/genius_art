@@ -61,7 +61,7 @@ export function ParallaxBanner({ isDark }: ParallaxBannerProps) {
           isDark ? "text-white/3" : "text-black/3"
         }`}
       >
-        IMAGINATION UNLEASHED &bull; METALLIC VECTORS &bull; WEBGL ACTIVE SHADERS
+        IMAGINATION UNLEASHED &bull; IMAGINATION UNLEASHED &bull; IMAGINATION UNLEASHED
       </div>
 
       <div
@@ -70,7 +70,7 @@ export function ParallaxBanner({ isDark }: ParallaxBannerProps) {
           isDark ? "text-white/5" : "text-black/5"
         }`}
       >
-        CHROME SHINE &bull; GENIUS COMPOSITION &bull; 0.2s LOAD TIME ACCELERATION
+        IMAGINATION UNLEASHED &bull; IMAGINATION UNLEASHED &bull; IMAGINATION UNLEASHED
       </div>
     </section>
   );

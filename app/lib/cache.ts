@@ -21,7 +21,7 @@ const DEFAULT_SERVICES: ServiceItem[] = [
       "AI-powered content that combines creativity, technology, and audience insights to create impactful brand experiences across digital and traditional platforms",
     features: [
       "Guaranteed cost efficiency",
-      "Effective communication",
+      "Enhancing brand salience",
       "Guaranteed user engagement",
     ],
     iconType: "digital-ai",
@@ -34,9 +34,9 @@ const DEFAULT_SERVICES: ServiceItem[] = [
     fullDesc:
       "Leveraging the power of AI and cinematic production, we create captivating brand stories that elevate perception, deepen engagement, and deliver memorable experiences",
     features: [
-      "4K Cinematic color grading",
-      "Cinematic audio",
-      "Creating brand attachment",
+      "Enhances brand meaningfulness",
+      "Cinematic colour grading",
+      "Cinematic Audio",
     ],
     iconType: "cinema",
     accentColor: "electric-blue",
@@ -213,7 +213,7 @@ export function initializeCacheStore(): LocalCacheStore {
               "AI-powered content that combines creativity, technology, and audience insights to create impactful brand experiences across digital and traditional platforms";
             item.features = [
               "Guaranteed cost efficiency",
-              "Effective communication",
+              "Enhancing brand salience",
               "Guaranteed user engagement",
             ];
             item.metricLabel = undefined;
@@ -227,9 +227,9 @@ export function initializeCacheStore(): LocalCacheStore {
             item.fullDesc =
               "Leveraging the power of AI and cinematic production, we create captivating brand stories that elevate perception, deepen engagement, and deliver memorable experiences";
             item.features = [
-              "4K Cinematic color grading",
-              "Cinematic audio",
-              "Creating brand attachment",
+              "Enhances brand meaningfulness",
+              "Cinematic colour grading",
+              "Cinematic Audio",
             ];
             item.metricLabel = undefined;
             item.metricValue = undefined;

@@ -13,6 +13,10 @@ interface FullScreenVideoPortalProps {
   thumbnailUrl?: string;
   videos?: PortalVideo[];
   loop?: boolean;
+  autoPlayDirect?: boolean;
+  immersive?: boolean;
+  showHeading?: boolean;
+  headingSuffix?: string;
 }
 
 const DEFAULT_VIDEO_URL = "https://youtu.be/OqRClNpVqZw?si=02az8DoeQ5A5vP8L";
@@ -48,6 +52,10 @@ export function FullScreenVideoPortal({
   thumbnailUrl = "",
   videos,
   loop = false,
+  autoPlayDirect = false,
+  immersive = false,
+  showHeading = true,
+  headingSuffix = "in 30 Seconds",
 }: FullScreenVideoPortalProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -69,22 +77,26 @@ export function FullScreenVideoPortal({
 
   return (
     <section
-      className={`w-full border-t py-16 transition-colors duration-300 md:py-24 ${
+      className={`w-full border-t transition-colors duration-300 ${immersive ? "py-0" : "py-16 md:py-24"} ${
         isDark ? "border-white/5 bg-[#030712]" : "border-slate-200 bg-slate-50"
       }`}
     >
-      <div className="mx-auto max-w-7xl space-y-10 px-4 md:px-8">
-        <div className="space-y-3 text-center">
+      <div className={immersive ? "w-full" : "mx-auto max-w-7xl space-y-10 px-4 md:px-8"}>
+        {showHeading && <div className="space-y-3 text-center">
           <h2 className="font-display text-3xl font-black uppercase leading-[0.95] tracking-tighter sm:text-4xl md:text-5xl">
             Our Masterpieces{" "}
             <span className={isDark ? "chrome-text" : "chrome-text-light"}>
-              in 30 Seconds
+              {headingSuffix}
             </span>
           </h2>
-        </div>
+        </div>}
 
-        <div className="group relative mx-auto aspect-video w-full max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-slate-950 shadow-2xl">
-          {isPlaying && (youtubeId || isDirectVideo) ? (
+        <div className={`group relative mx-auto w-full overflow-hidden border border-white/10 bg-slate-950 shadow-2xl ${
+          immersive
+            ? "h-[70svh] min-h-[28rem] border-x-0 md:h-[calc(100svh-4.75rem)] md:min-h-[38rem]"
+            : "aspect-video max-w-5xl rounded-3xl"
+        }`}>
+          {(isPlaying || (autoPlayDirect && isDirectVideo)) && (youtubeId || isDirectVideo) ? (
             youtubeId ? (
               <iframe
                 src={embedUrl}
@@ -100,6 +112,7 @@ export function FullScreenVideoPortal({
                 controls
                 autoPlay
                 loop={loop}
+                muted={autoPlayDirect}
                 playsInline
                 className="absolute inset-0 h-full w-full object-cover"
               />
