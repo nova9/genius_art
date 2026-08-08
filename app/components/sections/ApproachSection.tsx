@@ -72,7 +72,6 @@ export function ApproachSection({ isDark }: ApproachSectionProps) {
             Three Disciplines.
             <br />
             Clear Thinking and
-            <br />
             Close Collaboration.
           </motion.h2>
 
