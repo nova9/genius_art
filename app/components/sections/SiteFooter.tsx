@@ -1,3 +1,5 @@
+import { version } from "../../../package.json";
+
 interface SiteFooterProps { isDark: boolean; }
 export function SiteFooter({ isDark }: SiteFooterProps) {
   return (
@@ -10,7 +12,7 @@ export function SiteFooter({ isDark }: SiteFooterProps) {
             GENIUS ART
           </span>
           <span className={`text-[9px] font-mono ${isDark ? "text-white/30" : "text-slate-500"}`}>
-            | &copy; 2026 IMAGINATION UNLEASHED
+            v{version} | &copy; 2026 IMAGINATION UNLEASHED
           </span>
         </div>
       </div>
