@@ -83,20 +83,14 @@ export default function App() {
 
       <FullScreenVideoPortal
         isDark={isDark}
-        loop
-        autoPlayDirect
         immersive
         showHeading={false}
-        videos={[
-          {
-            videoUrl: "/video/hero.mp4",
-            thumbnailUrl: "/video/hero-thumbnail.png",
-          },
-          {
-            videoUrl: "https://youtu.be/RdQyIS-mvcw",
-            thumbnailUrl: "https://img.youtube.com/vi/RdQyIS-mvcw/maxresdefault.jpg",
-          },
-        ]}
+        backgroundVideoUrl="/video/hero.mp4"
+        overlayEyebrow="A Cinematic Journey"
+        overlayTitle="Imagination Unleashed"
+        overlayDescription="Watch imagination take flight as strategy, creativity and cinematic AI come together."
+        videoUrl="https://youtu.be/RdQyIS-mvcw"
+        thumbnailUrl="https://img.youtube.com/vi/RdQyIS-mvcw/maxresdefault.jpg"
       />
 
       <CapabilitiesSection services={services} isDark={isDark} />

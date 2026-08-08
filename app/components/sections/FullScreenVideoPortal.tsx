@@ -17,6 +17,10 @@ interface FullScreenVideoPortalProps {
   immersive?: boolean;
   showHeading?: boolean;
   headingSuffix?: string;
+  backgroundVideoUrl?: string;
+  overlayEyebrow?: string;
+  overlayTitle?: string;
+  overlayDescription?: string;
 }
 
 const DEFAULT_VIDEO_URL = "https://youtu.be/OqRClNpVqZw?si=02az8DoeQ5A5vP8L";
@@ -56,6 +60,10 @@ export function FullScreenVideoPortal({
   immersive = false,
   showHeading = true,
   headingSuffix = "in 30 Seconds",
+  backgroundVideoUrl,
+  overlayEyebrow,
+  overlayTitle,
+  overlayDescription,
 }: FullScreenVideoPortalProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -96,6 +104,46 @@ export function FullScreenVideoPortal({
             ? "h-[70svh] min-h-[28rem] border-x-0 md:h-[calc(100svh-4.75rem)] md:min-h-[38rem]"
             : "aspect-video max-w-5xl rounded-3xl"
         }`}>
+          {backgroundVideoUrl && (
+            <>
+              <video
+                src={backgroundVideoUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                aria-hidden="true"
+                className="absolute inset-0 h-full w-full object-cover opacity-75"
+              />
+              <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-[2px]" />
+            </>
+          )}
+
+          <div className={backgroundVideoUrl
+            ? "absolute inset-0 z-10 flex flex-col items-center justify-center gap-5 p-4 sm:p-6 md:gap-7 md:p-8"
+            : "absolute inset-0"
+          }>
+          {backgroundVideoUrl && overlayTitle && (
+            <div className="max-w-3xl space-y-2 text-center text-white md:space-y-3">
+              {overlayEyebrow && (
+                <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.34em] text-cyan-300 sm:text-xs">
+                  {overlayEyebrow}
+                </p>
+              )}
+              <h2 className="font-display text-3xl font-black uppercase leading-[0.92] tracking-tighter text-white sm:text-4xl md:text-5xl lg:text-6xl">
+                {overlayTitle}
+              </h2>
+              {overlayDescription && (
+                <p className="mx-auto max-w-2xl text-xs leading-relaxed text-slate-300 sm:text-sm md:text-base">
+                  {overlayDescription}
+                </p>
+              )}
+            </div>
+          )}
+          <div className={backgroundVideoUrl
+            ? "relative aspect-video w-full max-w-4xl overflow-hidden rounded-2xl border border-white/20 bg-slate-950 shadow-2xl"
+            : "absolute inset-0"
+          }>
           {(isPlaying || (autoPlayDirect && isDirectVideo)) && (youtubeId || isDirectVideo) ? (
             youtubeId ? (
               <iframe
@@ -177,6 +225,8 @@ export function FullScreenVideoPortal({
               </div>
             </>
           )}
+          </div>
+          </div>
         </div>
       </div>
     </section>
