@@ -18,6 +18,7 @@ import {
   PortfolioSection,
   SiteFooter,
   SiteHeader,
+  SharedParticleBackground,
 } from "./components/sections";
 
 export default function App() {
@@ -77,22 +78,26 @@ export default function App() {
         disableThemeToggle
       />
 
-      <HeroSection
-        isDark={isDark}
-        scrollY={scrollY}
-      />
+      <SharedParticleBackground isDark={isDark}>
+        <HeroSection
+          isDark={isDark}
+          scrollY={scrollY}
+          sharedParticleBackground
+        />
 
-      <FullScreenVideoPortal
-        isDark={isDark}
-        immersive
-        showHeading={false}
-        backgroundVideoUrl="/video/hero.mp4"
-        overlayEyebrow="A Cinematic Journey"
-        overlayTitle="Imagination Unleashed"
-        overlayDescription="Watch imagination take flight as strategy, creativity and cinematic AI come together."
-        videoUrl="https://youtu.be/RdQyIS-mvcw"
-        thumbnailUrl="https://img.youtube.com/vi/RdQyIS-mvcw/maxresdefault.jpg"
-      />
+        <FullScreenVideoPortal
+          isDark={isDark}
+          immersive
+          showHeading={false}
+          sharedParticleBackground
+          backgroundVideoUrl="/video/hero.mp4"
+          overlayEyebrow="A Cinematic Journey"
+          overlayTitle="Imagination Unleashed"
+          overlayDescription="Watch imagination take flight as strategy, creativity and cinematic AI come together."
+          videoUrl="https://youtu.be/RdQyIS-mvcw"
+          thumbnailUrl="https://img.youtube.com/vi/RdQyIS-mvcw/maxresdefault.jpg"
+        />
+      </SharedParticleBackground>
 
       <CapabilitiesSection services={services} isDark={isDark} />
 

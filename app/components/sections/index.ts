@@ -7,4 +7,5 @@ export { ParallaxBanner } from "./ParallaxBanner";
 export { PortfolioSection } from "./PortfolioSection";
 export { SiteFooter } from "./SiteFooter";
 export { SiteHeader } from "./SiteHeader";
+export { SharedParticleBackground } from "./SharedParticleBackground";
 export { TestimonialsSection } from "./TestimonialsSection";

@@ -21,93 +21,10 @@ interface FullScreenVideoPortalProps {
   overlayEyebrow?: string;
   overlayTitle?: string;
   overlayDescription?: string;
+  sharedParticleBackground?: boolean;
 }
 
 const DEFAULT_VIDEO_URL = "https://youtu.be/OqRClNpVqZw?si=02az8DoeQ5A5vP8L";
-
-function LoadingParticles({ active }: { active: boolean }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    if (!active) return;
-
-    const canvas = canvasRef.current;
-    const context = canvas?.getContext("2d");
-    if (!canvas || !context) return;
-
-    let animationFrame = 0;
-    let width = 0;
-    let height = 0;
-    let particles: Array<{
-      x: number;
-      y: number;
-      radius: number;
-      speed: number;
-      drift: number;
-      opacity: number;
-    }> = [];
-
-    const resize = () => {
-      const bounds = canvas.getBoundingClientRect();
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-      width = bounds.width;
-      height = bounds.height;
-      canvas.width = Math.round(width * pixelRatio);
-      canvas.height = Math.round(height * pixelRatio);
-      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-      particles = Array.from({ length: Math.max(45, Math.round(width / 18)) }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        radius: Math.random() * 1.8 + 0.4,
-        speed: Math.random() * 0.35 + 0.12,
-        drift: Math.random() * 0.18 - 0.09,
-        opacity: Math.random() * 0.55 + 0.2,
-      }));
-    };
-
-    const draw = () => {
-      context.clearRect(0, 0, width, height);
-
-      for (const particle of particles) {
-        context.beginPath();
-        context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        context.fillStyle = `rgba(103, 232, 249, ${particle.opacity})`;
-        context.shadowBlur = particle.radius > 1.4 ? 8 : 0;
-        context.shadowColor = "#22d3ee";
-        context.fill();
-
-        particle.y -= particle.speed;
-        particle.x += particle.drift;
-
-        if (particle.y < -4) {
-          particle.y = height + 4;
-          particle.x = Math.random() * width;
-        }
-      }
-
-      animationFrame = requestAnimationFrame(draw);
-    };
-
-    resize();
-    window.addEventListener("resize", resize);
-    draw();
-
-    return () => {
-      cancelAnimationFrame(animationFrame);
-      window.removeEventListener("resize", resize);
-    };
-  }, [active]);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden="true"
-      className={`pointer-events-none absolute inset-0 z-2 h-full w-full transition-opacity duration-700 ${
-        active ? "opacity-100" : "opacity-0"
-      }`}
-    />
-  );
-}
 
 function getYouTubeId(url: string) {
   try {
@@ -148,7 +65,9 @@ export function FullScreenVideoPortal({
   overlayEyebrow,
   overlayTitle,
   overlayDescription,
+  sharedParticleBackground = false,
 }: FullScreenVideoPortalProps) {
+  const backgroundVideoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isBackgroundVideoReady, setIsBackgroundVideoReady] = useState(false);
@@ -163,6 +82,31 @@ export function FullScreenVideoPortal({
   const isDirectVideo = /\.(mp4|webm|ogg)(?:[?#].*)?$/i.test(activeVideo.videoUrl);
   const isCarousel = slides.length > 1;
 
+  useEffect(() => {
+    const backgroundVideo = backgroundVideoRef.current;
+    if (!backgroundVideo || !backgroundVideoUrl) return;
+
+    const resumeBackgroundVideo = () => {
+      if (backgroundVideo.ended) backgroundVideo.currentTime = 0;
+      void backgroundVideo.play().catch(() => {
+        // Muted autoplay can still be deferred by the browser until the page is active.
+      });
+    };
+
+    const handleVisibilityChange = () => {
+      if (!document.hidden) resumeBackgroundVideo();
+    };
+
+    resumeBackgroundVideo();
+    backgroundVideo.addEventListener("ended", resumeBackgroundVideo);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      backgroundVideo.removeEventListener("ended", resumeBackgroundVideo);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [backgroundVideoUrl]);
+
   const changeSlide = (index: number) => {
     setIsPlaying(false);
     setActiveIndex((index + slides.length) % slides.length);
@@ -171,7 +115,9 @@ export function FullScreenVideoPortal({
   return (
     <section
       className={`w-full border-t transition-colors duration-300 ${immersive ? "py-0" : "py-16 md:py-24"} ${
-        isDark ? "border-white/5 bg-[#030712]" : "border-slate-200 bg-slate-50"
+        sharedParticleBackground
+          ? "border-white/5 bg-transparent"
+          : isDark ? "border-white/5 bg-[#030712]" : "border-slate-200 bg-slate-50"
       }`}
     >
       <div className={immersive ? "w-full" : "mx-auto max-w-7xl space-y-10 px-4 md:px-8"}>
@@ -184,7 +130,9 @@ export function FullScreenVideoPortal({
           </h2>
         </div>}
 
-        <div className={`group relative mx-auto w-full overflow-hidden border border-white/10 bg-slate-950 shadow-2xl ${
+        <div className={`group relative mx-auto w-full overflow-hidden border border-white/10 shadow-2xl ${
+          sharedParticleBackground ? "bg-transparent" : "bg-slate-950"
+        } ${
           immersive
             ? "h-[70svh] min-h-[28rem] border-x-0 md:h-[calc(100svh-4.75rem)] md:min-h-[38rem]"
             : "aspect-video max-w-5xl rounded-3xl"
@@ -192,20 +140,28 @@ export function FullScreenVideoPortal({
           {backgroundVideoUrl && (
             <>
               <video
+                ref={backgroundVideoRef}
                 src={backgroundVideoUrl}
                 autoPlay
-                loop
                 muted
                 playsInline
                 preload="auto"
                 aria-hidden="true"
                 onLoadStart={() => setIsBackgroundVideoReady(false)}
+                onLoadedMetadata={() => setIsBackgroundVideoReady(true)}
                 onLoadedData={() => setIsBackgroundVideoReady(true)}
                 onCanPlay={() => setIsBackgroundVideoReady(true)}
+                onPlaying={() => setIsBackgroundVideoReady(true)}
+                onPause={(event) => {
+                  if (!document.hidden && event.currentTarget.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+                    void event.currentTarget.play().catch(() => undefined);
+                  }
+                }}
                 className="absolute inset-0 h-full w-full object-cover opacity-75"
               />
-              <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-[2px]" />
-              <LoadingParticles active={!isBackgroundVideoReady} />
+              <div className={`absolute inset-0 bg-slate-950/50 backdrop-blur-[2px] transition-opacity duration-700 ${
+                isBackgroundVideoReady ? "opacity-100" : "opacity-0"
+              }`} />
             </>
           )}
 
