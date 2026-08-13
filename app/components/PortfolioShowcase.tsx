@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { PortfolioItem } from "../types";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { Eye, X, Zap } from "lucide-react";
@@ -17,6 +17,52 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
   const searchQuery = "";
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!selectedProject) return;
+
+    const previouslyFocusedElement = document.activeElement as HTMLElement | null;
+    const previousBodyOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSelectedProject(null);
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusableElements = dialogRef.current?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), a[href], iframe, [tabindex]:not([tabindex="-1"])',
+      );
+
+      if (!focusableElements?.length) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+      previouslyFocusedElement?.focus();
+    };
+  }, [selectedProject]);
 
   const getYoutubeId = (url?: string) => {
     if (!url) return "";
@@ -295,100 +341,111 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
       {typeof document !== "undefined" && createPortal(
         <AnimatePresence>
           {selectedProject && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Backdrop backing layer */}
-            <motion.div
-              layoutId="backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.6 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedProject(null)}
-              className="absolute inset-0 bg-slate-950"
-            />
+            <div className="fixed inset-0 z-[100] flex items-center justify-center sm:p-4 md:p-6">
+              <motion.button
+                type="button"
+                aria-label="Close project viewer"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: shouldReduceMotion ? 0.1 : 0.25 }}
+                onClick={() => setSelectedProject(null)}
+                className="absolute inset-0 h-full w-full cursor-default bg-slate-950/90 backdrop-blur-sm"
+              />
 
-            {/* Modal Card frame */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 30 }}
-              transition={{ type: "spring", damping: 25, stiffness: 180 }}
-              className={`relative w-full max-w-5xl max-h-[calc(100vh-2rem)] overflow-y-auto rounded-3xl border shadow-2xl z-10 ${
-                isDark 
-                  ? "bg-slate-900 border-slate-800 text-white" 
-                  : "bg-white border-slate-200 text-slate-900"
-              }`}
-            >
-              <div className="relative">
-                {/* Spectacular Banner Header */}
-                <div className="relative aspect-video bg-slate-950">
+              <motion.div
+                ref={dialogRef}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby={`project-dialog-title-${selectedProject.id}`}
+                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.97, y: 24 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98, y: 16 }}
+                transition={shouldReduceMotion
+                  ? { duration: 0.1 }
+                  : { duration: 0.42, ease: [0.16, 1, 0.3, 1] }
+                }
+                className={`relative z-10 flex h-[100svh] w-full max-w-6xl flex-col overflow-y-auto overscroll-contain shadow-[0_32px_100px_rgba(0,0,0,0.65)] sm:h-auto sm:max-h-[calc(100svh-2rem)] sm:rounded-2xl ${
+                  isDark ? "bg-slate-900 text-white" : "bg-white text-slate-950"
+                }`}
+              >
+                <div className="relative aspect-video w-full shrink-0 overflow-hidden bg-black">
                   {selectedProject.videoUrl ? (
                     <iframe
                       src={getYoutubeEmbedUrl(selectedProject.videoUrl)}
-                      title={selectedProject.title}
-                      frameBorder="0"
+                      title={`${selectedProject.title} video`}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowFullScreen
-                      className="w-full h-full absolute inset-0 z-0"
+                      className="absolute inset-0 h-full w-full"
                     />
                   ) : (
                     <Image
                       src={selectedProject.image}
                       alt={selectedProject.title}
                       fill
-                      sizes="(min-width: 672px) 672px, 100vw"
-                      className="w-full h-full object-cover brightness-75"
+                      priority
+                      sizes="(min-width: 1280px) 1152px, 100vw"
+                      className="object-cover"
                     />
                   )}
-                  {/* Category overlay */}
-                  <span className="absolute bottom-4 left-4 bg-slate-950 border border-cyan-500/30 text-xs font-mono font-bold text-cyan-400 px-3 py-1 rounded-md">
+
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-linear-to-b from-black/70 to-transparent" />
+                  <span className="pointer-events-none absolute left-3 top-3 rounded-md bg-black/80 px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-cyan-300 sm:left-4 sm:top-4 sm:text-xs">
                     {selectedProject.category}
                   </span>
-                  
-                  {/* Close btn */}
+
                   <button
+                    ref={closeButtonRef}
+                    type="button"
                     onClick={() => setSelectedProject(null)}
-                    className="absolute top-4 right-4 p-2 rounded-full bg-slate-950/80 border border-slate-800 text-slate-300 hover:text-white transition-colors"
+                    aria-label="Close project viewer"
+                    className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-full bg-black/80 text-white shadow-[0_4px_18px_rgba(0,0,0,0.4)] transition-colors hover:bg-white hover:text-slate-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300 sm:right-4 sm:top-4"
                   >
-                    <X className="h-4 w-4" />
+                    <X className="h-5 w-5" aria-hidden="true" />
                   </button>
                 </div>
 
-                {/* Body elements */}
-                <div className="p-6 md:p-8 space-y-5 text-left">
-                  {/* Title & Client metadata */}
-                  <div className="space-y-1.5">
-                    <h4 className="text-2xl md:text-3xl font-display font-bold">
-                      {selectedProject.title}
-                    </h4>
-                    <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-500"}`}>
-                      Client: <strong className={isDark ? "text-white" : "text-black"}>{selectedProject.client}</strong> &bull; Released: {selectedProject.year}
-                    </p>
-                  </div>
+                <div className="grid gap-6 p-5 text-left sm:p-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:gap-10 md:p-8">
+                  <div className="min-w-0 space-y-4">
+                    <div className="space-y-2">
+                      <h4
+                        id={`project-dialog-title-${selectedProject.id}`}
+                        className="text-balance font-display text-3xl font-black uppercase leading-[0.95] tracking-[-0.04em] sm:text-4xl md:text-5xl"
+                      >
+                        {selectedProject.title}
+                      </h4>
+                      <div className={`flex flex-wrap items-center gap-x-3 gap-y-1 text-sm ${
+                        isDark ? "text-slate-400" : "text-slate-600"
+                      }`}>
+                        <span className={isDark ? "font-semibold text-white" : "font-semibold text-slate-950"}>
+                          {selectedProject.client}
+                        </span>
+                        <span aria-hidden="true" className="text-cyan-400">/</span>
+                        <span>{selectedProject.year}</span>
+                      </div>
+                    </div>
 
-                  {/* Description text */}
-                  <div>
-                    <p className={`text-base leading-relaxed ${isDark ? "text-slate-300" : "text-slate-600"}`}>
+                    <p className={`max-w-[70ch] text-sm leading-6 sm:text-base sm:leading-7 ${
+                      isDark ? "text-slate-300" : "text-slate-700"
+                    }`}>
                       {selectedProject.description}
                     </p>
                   </div>
 
-                  {/* CTA click close bar */}
-                  <div className="pt-4 text-center">
-                    <button
-                      onClick={() => setSelectedProject(null)}
-                      className={`px-8 py-3 rounded-xl text-sm font-semibold transition-all ${
-                        isDark 
-                          ? "bg-cyan-500 text-slate-950 hover:bg-cyan-400" 
-                          : "bg-blue-600 text-white hover:bg-blue-700"
-                      }`}
-                    >
-                      Close
-                    </button>
-                  </div>
-
+                  <button
+                    type="button"
+                    onClick={() => setSelectedProject(null)}
+                    className={`inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400 md:w-auto ${
+                      isDark
+                        ? "bg-white/10 text-white hover:bg-white/15"
+                        : "bg-slate-100 text-slate-950 hover:bg-slate-200"
+                    }`}
+                  >
+                    <X className="h-4 w-4" aria-hidden="true" />
+                    Close viewer
+                  </button>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
             </div>
           )}
         </AnimatePresence>,
