@@ -21,6 +21,13 @@ const process = [
   },
 ] as const;
 
+const headline = [
+  "One Studio.",
+  "Three Disciplines.",
+  "Clear Thinking and",
+  "Close Collaboration.",
+] as const;
+
 export function ApproachSection({ isDark }: ApproachSectionProps) {
   const shouldReduceMotion = useReducedMotion();
 
@@ -56,24 +63,27 @@ export function ApproachSection({ isDark }: ApproachSectionProps) {
         </motion.p>
 
         <div className="grid gap-14 lg:grid-cols-[0.9fr_1.45fr] lg:items-stretch lg:gap-24">
-          <motion.h2
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{
-              duration: 0.8,
-              delay: 0.12,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="max-w-xl text-[clamp(2.5rem,4.4vw,4.5rem)] font-light leading-[0.98] tracking-[-0.055em]"
-          >
-            One Studio.
-            <br />
-            Three Disciplines.
-            <br />
-            Clear Thinking and
-            Close Collaboration.
-          </motion.h2>
+          <h2 className="flex max-w-xl flex-col text-[clamp(2.5rem,4.4vw,4.5rem)] font-light leading-[0.98] tracking-[-0.04em]">
+            {headline.map((line, index) => (
+              <motion.span
+                key={line}
+                initial={shouldReduceMotion ? false : {
+                  opacity: 0.22,
+                  x: index % 2 === 0 ? -42 : 42,
+                  filter: "blur(6px)",
+                }}
+                whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                viewport={{ once: true, amount: 0.8 }}
+                transition={{
+                  duration: 0.72,
+                  delay: shouldReduceMotion ? 0 : index * 0.14,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                {line}
+              </motion.span>
+            ))}
+          </h2>
 
           <motion.div
             initial={shouldReduceMotion ? false : { opacity: 0 }}
@@ -93,10 +103,15 @@ export function ApproachSection({ isDark }: ApproachSectionProps) {
                   delay: shouldReduceMotion ? 0 : index * 0.08,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="grid content-start gap-4 sm:grid-cols-[8rem_1fr] sm:gap-9"
+                whileHover={shouldReduceMotion ? undefined : { x: 7 }}
+                className="group grid content-start gap-4 sm:grid-cols-[8rem_1fr] sm:gap-9"
               >
-                <h3 className="text-xl font-normal tracking-[-0.025em] md:text-2xl">
-                  {title}
+                <h3 className="relative w-fit text-xl font-medium tracking-[-0.025em] text-cyan-300 transition-[color,text-shadow] duration-200 group-hover:text-cyan-200 group-hover:[text-shadow:0_8px_24px_rgba(34,211,238,0.28)] md:text-2xl">
+                  <span>{title}</span>
+                  <span
+                    aria-hidden="true"
+                    className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-cyan-300 transition-transform duration-300 ease-out group-hover:scale-x-100"
+                  />
                 </h3>
                 <p
                   className={`max-w-2xl text-[15px] leading-7 md:text-base ${

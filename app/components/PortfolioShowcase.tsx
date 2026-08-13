@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { PortfolioItem } from "../types";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { Eye, X, Zap } from "lucide-react";
 import Image from "next/image";
 
@@ -10,6 +10,7 @@ interface PortfolioShowcaseProps {
 }
 
 export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio, isDark }) => {
+  const shouldReduceMotion = useReducedMotion();
   const selectedCategory = "All";
   const [selectedProject, setSelectedProject] = useState<PortfolioItem | null>(null);
   const searchQuery = "";
@@ -60,18 +61,44 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
   return (
     <div className="w-full space-y-8">
       {/* section header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-4 border-b border-white/10">
-        <div className="space-y-1">
-          <h3 className="text-4xl md:text-5xl lg:text-6xl font-display font-black tracking-tighter uppercase leading-[0.95]">
-            <span className="mr-3 md:mr-4 inline-block">Our</span>
-            <span className={`${isDark ? "chrome-text" : "chrome-text-light"}`}>
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-4 overflow-hidden border-b border-white/10">
+        <motion.div
+          initial={shouldReduceMotion ? false : { opacity: 0.3 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.7 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="space-y-1"
+        >
+          <h3 className="text-4xl md:text-5xl lg:text-6xl font-display font-black tracking-[-0.04em] uppercase leading-[0.95]">
+            <motion.span
+              initial={shouldReduceMotion ? false : { opacity: 0.35, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.7 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="mr-3 md:mr-4 inline-block"
+            >
+              Our
+            </motion.span>
+            <motion.span
+              initial={shouldReduceMotion ? false : { x: 72 }}
+              whileInView={{ x: 0 }}
+              viewport={{ once: true, amount: 0.7 }}
+              transition={{ duration: 0.78, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+              className={`inline-block ${isDark ? "chrome-text" : "chrome-text-light"}`}
+            >
               Masterpieces
-            </span>
+            </motion.span>
           </h3>
-          <p className={`text-xs ${isDark ? "text-slate-400" : "text-slate-600"}`}>
+          <motion.p
+            initial={shouldReduceMotion ? false : { opacity: 0.3, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.8 }}
+            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+            className={`text-xs ${isDark ? "text-slate-400" : "text-slate-600"}`}
+          >
             Every project represents a tailored collaboration leveraging high-contrast textures and deep audience empathy.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </div>
 
       {/* Grid containing project cards */}

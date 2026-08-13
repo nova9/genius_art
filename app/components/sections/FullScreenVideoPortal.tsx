@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import Image from "next/image";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 
 interface PortalVideo {
   videoUrl: string;
@@ -66,7 +67,15 @@ export function FullScreenVideoPortal({
   overlayTitle,
   sharedParticleBackground = false,
 }: FullScreenVideoPortalProps) {
+  const portalRef = useRef<HTMLElement>(null);
   const backgroundVideoRef = useRef<HTMLVideoElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: portalRef,
+    offset: ["start end", "end start"],
+  });
+  const eyebrowX = useTransform(scrollYProgress, [0, 0.5, 1], [-32, 0, 32]);
+  const titleX = useTransform(scrollYProgress, [0, 0.5, 1], [72, 0, -72]);
   const [shouldLoadBackgroundVideo, setShouldLoadBackgroundVideo] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -134,6 +143,7 @@ export function FullScreenVideoPortal({
 
   return (
     <section
+      ref={portalRef}
       className={`w-full transition-colors duration-300 ${immersive ? "py-0" : "py-16 md:py-24"} ${
         sharedParticleBackground
           ? "bg-transparent"
@@ -141,9 +151,9 @@ export function FullScreenVideoPortal({
       }`}
     >
       <div className={immersive ? "w-full" : "mx-auto max-w-7xl space-y-10 px-4 md:px-8"}>
-        {showHeading && <div className="space-y-3 text-center">
-          <h2 className="font-display text-3xl font-black uppercase leading-[0.95] tracking-tighter sm:text-4xl md:text-5xl">
-            Our Masterpieces{" "}
+        {showHeading && <div className="space-y-3 overflow-visible py-1 text-center">
+          <h2 className="text-balance px-1 py-1 font-display text-3xl font-black uppercase leading-[1.05] tracking-[-0.04em] sm:text-4xl md:text-5xl">
+            <span className="inline-block px-1">Our Masterpieces</span>{" "}
             <span className={isDark ? "chrome-text" : "chrome-text-light"}>
               {headingSuffix}
             </span>
@@ -192,16 +202,28 @@ export function FullScreenVideoPortal({
             : "absolute inset-0"
           }>
           {overlayTitle && (
-            <div className="max-w-3xl space-y-2 text-center text-white md:space-y-3">
+            <motion.div
+              initial={shouldReduceMotion ? false : { opacity: 0.35, filter: "blur(5px)" }}
+              whileInView={{ opacity: 1, filter: "blur(0px)" }}
+              viewport={{ once: true, amount: 0.55 }}
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+              className="max-w-3xl space-y-2 overflow-hidden text-center text-white md:space-y-3"
+            >
               {overlayEyebrow && (
-                <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.34em] text-cyan-300 sm:text-xs">
+                <motion.p
+                  style={shouldReduceMotion ? undefined : { x: eyebrowX }}
+                  className="font-mono text-[10px] font-semibold uppercase tracking-[0.34em] text-cyan-300 sm:text-xs"
+                >
                   {overlayEyebrow}
-                </p>
+                </motion.p>
               )}
-              <h2 className="font-display text-3xl font-black uppercase leading-[0.92] tracking-tighter [word-spacing:0.25em] text-white sm:text-4xl md:text-5xl lg:text-6xl">
+              <motion.h2
+                style={shouldReduceMotion ? undefined : { x: titleX }}
+                className="font-display text-3xl font-black uppercase leading-[0.92] tracking-[-0.04em] [word-spacing:0.25em] text-white sm:text-4xl md:text-5xl lg:text-6xl"
+              >
                 {overlayTitle}
-              </h2>
-            </div>
+              </motion.h2>
+            </motion.div>
           )}
           <div className={hasOverlay
             ? "relative aspect-video w-full max-w-4xl overflow-hidden rounded-2xl border border-white/20 bg-slate-950 shadow-2xl"
