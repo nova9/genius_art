@@ -3,6 +3,7 @@ import { PortfolioItem } from "../types";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { Eye, X, Zap } from "lucide-react";
 import Image from "next/image";
+import { createPortal } from "react-dom";
 
 interface PortfolioShowcaseProps {
   portfolio: PortfolioItem[];
@@ -291,9 +292,10 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
       </motion.div>
 
       {/* DETAILED PROJECT INSPECTION DRAWER MODAL */}
-      <AnimatePresence>
-        {selectedProject && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {typeof document !== "undefined" && createPortal(
+        <AnimatePresence>
+          {selectedProject && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             {/* Backdrop backing layer */}
             <motion.div
               layoutId="backdrop"
@@ -387,9 +389,11 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
                 </div>
               </div>
             </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
 
     </div>
   );
