@@ -260,10 +260,10 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
             {/* Main Spark (glowing and pulsing) */}
             <motion.g
               animate={{ 
-                scale: isHovered ? [1, 1.25, 1] : [1, 1.1, 1],
+                scale: isHovered ? [1, 1.25, 1] : 1,
                 rotate: isHovered ? [0, 90, 180, 270, 360] : 0
               }}
-              transition={{ duration: isHovered ? 1.5 : 4, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 1.5, repeat: isHovered ? Infinity : 0, ease: "easeInOut" }}
             >
               {/* Vertical flare */}
               <path d="M50 15 Q50 50 15 50 Q50 50 50 85 Q50 50 85 50 Q50 50 50 15 Z" fill="url(#metalChrome)" filter="url(#metalSpecularBevel)" />
@@ -476,8 +476,8 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
               stroke="url(#iceGlass)"
               strokeWidth="1"
               strokeDasharray="4 6"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
+              animate={{ rotate: isHovered ? 360 : 0 }}
+              transition={{ duration: 16, repeat: isHovered ? Infinity : 0, ease: "linear" }}
               style={{ originX: "50px", originY: "52px" }}
               opacity="0.5"
             />
@@ -532,13 +532,13 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
                 filter="url(#metalSpecularBevel)"
                 opacity="0.6"
                 animate={{
-                  strokeDashoffset: isHovered ? [0, -20] : [0, -10],
-                  opacity: isHovered ? [0.6, 0.9, 0.6] : [0.5, 0.7, 0.5],
+                  strokeDashoffset: isHovered ? [0, -20] : 0,
+                  opacity: isHovered ? [0.6, 0.9, 0.6] : 0.6,
                 }}
                 strokeDasharray="4 4"
                 transition={{
                   duration: 2,
-                  repeat: Infinity,
+                  repeat: isHovered ? Infinity : 0,
                   ease: "linear"
                 }}
               />
@@ -551,13 +551,13 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
                 filter="url(#metalSpecularBevel)"
                 opacity="0.75"
                 animate={{
-                  strokeDashoffset: isHovered ? [0, 20] : [0, 10],
-                  opacity: isHovered ? [0.75, 1, 0.75] : [0.65, 0.85, 0.65],
+                  strokeDashoffset: isHovered ? [0, 20] : 0,
+                  opacity: isHovered ? [0.75, 1, 0.75] : 0.75,
                 }}
                 strokeDasharray="4 4"
                 transition={{
                   duration: 2,
-                  repeat: Infinity,
+                  repeat: isHovered ? Infinity : 0,
                   ease: "linear"
                 }}
               />
@@ -667,7 +667,7 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
                 animate={{
                   opacity: isHovered ? [0.4, 0.9, 0.4] : 0.4
                 }}
-                transition={{ duration: 1.5, repeat: Infinity }}
+                transition={{ duration: 1.5, repeat: isHovered ? Infinity : 0 }}
               >
                 <line
                   x1="26" y1="62" x2="44" y2="71"
@@ -680,7 +680,7 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
                 animate={{
                   opacity: isHovered ? [0.4, 0.9, 0.4] : 0.4
                 }}
-                transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}
+                transition={{ duration: 1.5, repeat: isHovered ? Infinity : 0, delay: 0.3 }}
               >
                 <line
                   x1="56" y1="71" x2="74" y2="62"
@@ -698,9 +698,9 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
               strokeWidth="1.5"
               className="drop-shadow-[0_0_4px_#38bdf8]"
               animate={{
-                opacity: isHovered ? [0.9, 0.6, 1, 0.8, 1] : [0.7, 0.8, 0.7]
+                opacity: isHovered ? [0.9, 0.6, 1, 0.8, 1] : 0.7
               }}
-              transition={{ duration: 1, repeat: Infinity }}
+              transition={{ duration: 1, repeat: isHovered ? Infinity : 0 }}
             />
             
             {/* Interactive floating branding Sign with custom logo/initial inside */}
@@ -722,10 +722,10 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
               {/* Glowing BRAND neon sign (floating 'B' or '3D' design mark) */}
               <motion.g
                 animate={{
-                  scale: isHovered ? [1, 1.05, 1] : [0.98, 1.02, 0.98],
-                  opacity: isHovered ? [0.8, 1, 0.8] : [0.7, 0.9, 0.7]
+                  scale: isHovered ? [1, 1.05, 1] : 1,
+                  opacity: isHovered ? [0.8, 1, 0.8] : 0.8
                 }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ duration: 2, repeat: isHovered ? Infinity : 0, ease: "easeInOut" }}
               >
                 {/* Custom geometric logo mark (isometric shopping symbol or custom polygon branding badge) */}
                 <polygon
@@ -774,7 +774,7 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
                 animate={{
                   opacity: isHovered ? [0.6, 1, 0.6] : 0.7
                 }}
-                transition={{ duration: 1.2, repeat: Infinity }}
+                transition={{ duration: 1.2, repeat: isHovered ? Infinity : 0 }}
               />
             </motion.g>
 
