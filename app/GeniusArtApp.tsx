@@ -77,6 +77,14 @@ export default function App() {
 
         <FullScreenVideoPortal
           isDark={isDark}
+          videoUrl={portalVideoUrl}
+          thumbnailUrl="https://img.youtube.com/vi/OqRClNpVqZw/maxresdefault.jpg"
+          headingSuffix="in a Minute"
+          sharedParticleBackground
+        />
+
+        <FullScreenVideoPortal
+          isDark={isDark}
           immersive
           showHeading={false}
           sharedParticleBackground
@@ -87,19 +95,10 @@ export default function App() {
         />
       </SharedParticleBackground>
 
-      <CapabilitiesSection services={services} isDark={isDark} />
-
-      <ApproachSection isDark={isDark} />
-
-      <FullScreenVideoPortal
-        isDark={isDark}
-        videoUrl={portalVideoUrl}
-        thumbnailUrl="https://img.youtube.com/vi/OqRClNpVqZw/maxresdefault.jpg"
-        headingSuffix="in a Minute"
-      />
-
-      <ParallaxBanner isDark={isDark} />
       <PortfolioSection portfolio={portfolio} isDark={isDark} />
+      <CapabilitiesSection services={services} isDark={isDark} />
+      <ApproachSection isDark={isDark} />
+      <ParallaxBanner isDark={isDark} />
       <ContactSection isDark={isDark} />
       <SiteFooter isDark={isDark} />
 
