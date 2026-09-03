@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 
 interface PortalVideo {
   videoUrl: string;
@@ -67,15 +67,8 @@ export function FullScreenVideoPortal({
   overlayTitle,
   sharedParticleBackground = false,
 }: FullScreenVideoPortalProps) {
-  const portalRef = useRef<HTMLElement>(null);
   const backgroundVideoRef = useRef<HTMLVideoElement>(null);
   const shouldReduceMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: portalRef,
-    offset: ["start end", "end start"],
-  });
-  const eyebrowX = useTransform(scrollYProgress, [0, 0.5, 1], [-32, 0, 32]);
-  const titleX = useTransform(scrollYProgress, [0, 0.5, 1], [72, 0, -72]);
   const [shouldLoadBackgroundVideo, setShouldLoadBackgroundVideo] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -143,7 +136,6 @@ export function FullScreenVideoPortal({
 
   return (
     <section
-      ref={portalRef}
       className={`w-full transition-colors duration-300 ${immersive ? "py-0" : "py-16 md:py-24"} ${
         sharedParticleBackground
           ? "bg-transparent"
@@ -210,19 +202,13 @@ export function FullScreenVideoPortal({
               className="max-w-3xl space-y-2 overflow-hidden text-center text-white md:space-y-3"
             >
               {overlayEyebrow && (
-                <motion.p
-                  style={shouldReduceMotion ? undefined : { x: eyebrowX }}
-                  className="font-mono text-[10px] font-semibold uppercase tracking-[0.34em] text-cyan-300 sm:text-xs"
-                >
+                <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.34em] text-cyan-300 sm:text-xs">
                   {overlayEyebrow}
-                </motion.p>
+                </p>
               )}
-              <motion.h2
-                style={shouldReduceMotion ? undefined : { x: titleX }}
-                className="font-display text-3xl font-black uppercase leading-[0.92] tracking-[-0.04em] [word-spacing:0.25em] text-white sm:text-4xl md:text-5xl lg:text-6xl"
-              >
+              <h2 className="font-display text-3xl font-black uppercase leading-[0.92] tracking-[-0.04em] [word-spacing:0.25em] text-white sm:text-4xl md:text-5xl lg:text-6xl">
                 {overlayTitle}
-              </motion.h2>
+              </h2>
             </motion.div>
           )}
           <div className={hasOverlay
@@ -259,6 +245,7 @@ export function FullScreenVideoPortal({
                   fill
                   sizes="(min-width: 1024px) 1024px, 100vw"
                   unoptimized
+                  loading={immersive ? "eager" : "lazy"}
                   className="absolute inset-0 h-full w-full object-cover opacity-50"
                 />
               )}

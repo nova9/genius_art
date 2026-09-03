@@ -530,7 +530,7 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
                 stroke="#00f0ff"
                 strokeWidth="1.25"
                 filter="url(#metalSpecularBevel)"
-                opacity="0.6"
+                initial={{ strokeDashoffset: 0, opacity: 0.6 }}
                 animate={{
                   strokeDashoffset: isHovered ? [0, -20] : 0,
                   opacity: isHovered ? [0.6, 0.9, 0.6] : 0.6,
@@ -549,7 +549,7 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
                 stroke="#00f0ff"
                 strokeWidth="1.25"
                 filter="url(#metalSpecularBevel)"
-                opacity="0.75"
+                initial={{ strokeDashoffset: 0, opacity: 0.75 }}
                 animate={{
                   strokeDashoffset: isHovered ? [0, 20] : 0,
                   opacity: isHovered ? [0.75, 1, 0.75] : 0.75,
@@ -697,6 +697,7 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
               stroke="#00f0ff"
               strokeWidth="1.5"
               className="drop-shadow-[0_0_4px_#38bdf8]"
+              initial={{ opacity: 0.7 }}
               animate={{
                 opacity: isHovered ? [0.9, 0.6, 1, 0.8, 1] : 0.7
               }}
@@ -721,6 +722,7 @@ export const TexturedIcon: React.FC<TexturedIconProps> = ({
               
               {/* Glowing BRAND neon sign (floating 'B' or '3D' design mark) */}
               <motion.g
+                initial={{ scale: 1, opacity: 0.8 }}
                 animate={{
                   scale: isHovered ? [1, 1.05, 1] : 1,
                   opacity: isHovered ? [0.8, 1, 0.8] : 0.8
