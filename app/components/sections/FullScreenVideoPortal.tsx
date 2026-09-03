@@ -157,7 +157,7 @@ export function FullScreenVideoPortal({
         } ${
           immersive
             ? `h-[70svh] min-h-[28rem] border-x-0 md:h-[calc(100svh-4.75rem)] md:min-h-[38rem] ${
-                sharedParticleBackground ? "border-t-0" : ""
+                sharedParticleBackground ? "border-y-0" : ""
               }`
             : "aspect-video max-w-5xl rounded-3xl"
         }`}>
