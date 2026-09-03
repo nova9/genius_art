@@ -11,3 +11,6 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 Having a single source of truth is important for anything.
 Simplicity is the best.
 Generalizability is the best.
+
+Do not build.
+DO not run.

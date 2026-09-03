@@ -10,7 +10,7 @@ interface FullScreenVideoPortalProps {
   videoUrl: string;
   thumbnailUrl: string;
   immersive?: boolean;
-  showHeading?: boolean;
+  heading?: string;
   headingSuffix?: string;
   overlayEyebrow?: string;
   overlayTitle?: string;
@@ -20,8 +20,8 @@ export function FullScreenVideoPortal({
   videoUrl,
   thumbnailUrl,
   immersive = false,
-  showHeading = true,
-  headingSuffix = "in 30 Seconds",
+  heading,
+  headingSuffix,
   overlayEyebrow,
   overlayTitle,
 }: FullScreenVideoPortalProps) {
@@ -30,15 +30,21 @@ export function FullScreenVideoPortal({
   const youtubeId = getYouTubeId(videoUrl);
   const embedUrl = getYouTubeEmbedUrl(videoUrl);
   const hasOverlay = Boolean(overlayTitle);
+  const overlayTitleWords = overlayTitle?.trim().split(/\s+/) ?? [];
 
   return (
     <section className={immersive ? "w-full" : "w-full py-16 md:py-24"}>
       <div className={immersive ? "w-full" : "mx-auto max-w-7xl space-y-10 px-4 md:px-8"}>
-        {showHeading && (
+        {heading && (
           <div className="py-1 text-center">
             <h2 className="text-balance px-1 py-1 text-3xl font-black uppercase leading-[1.05] tracking-[-0.04em] sm:text-4xl md:text-5xl">
-              <span className="inline-block px-1">Our Masterpieces</span>{" "}
-              <span className="chrome-text">{headingSuffix}</span>
+              <span className="inline-block px-1">{heading}</span>
+              {headingSuffix && (
+                <>
+                  {" "}
+                  <span className="chrome-text">{headingSuffix}</span>
+                </>
+              )}
             </h2>
           </div>
         )}
@@ -59,27 +65,88 @@ export function FullScreenVideoPortal({
           >
             {overlayTitle && (
               <motion.div
-                initial={shouldReduceMotion ? false : { opacity: 0.35, filter: "blur(5px)" }}
-                whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                initial={shouldReduceMotion ? false : "rest"}
+                whileInView="reveal"
                 viewport={{ once: true, amount: 0.55 }}
-                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-                className="max-w-3xl space-y-2 overflow-hidden text-center text-white md:space-y-3"
+                variants={{
+                  rest: {},
+                  reveal: {
+                    transition: {
+                      delayChildren: 0.12,
+                      staggerChildren: 0.13,
+                    },
+                  },
+                }}
+                className="max-w-3xl shrink-0 space-y-2 text-center text-white md:space-y-3"
               >
                 {overlayEyebrow && (
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-cyan-300 sm:text-xs">
+                  <motion.p
+                    variants={{
+                      rest: {
+                        opacity: 0.4,
+                        x: -18,
+                        filter: "blur(4px)",
+                      },
+                      reveal: {
+                        opacity: 1,
+                        x: 0,
+                        filter: "blur(0px)",
+                        transition: {
+                          duration: 0.65,
+                          ease: [0.16, 1, 0.3, 1],
+                        },
+                      },
+                    }}
+                    className="text-[10px] font-semibold uppercase tracking-[0.34em] text-cyan-300 sm:text-xs"
+                  >
                     {overlayEyebrow}
-                  </p>
+                  </motion.p>
                 )}
-                <h2 className="text-3xl font-black uppercase leading-[0.92] tracking-[-0.04em] text-white [word-spacing:0.25em] sm:text-4xl md:text-5xl lg:text-6xl">
-                  {overlayTitle}
-                </h2>
+                <motion.h2
+                  aria-label={overlayTitle}
+                  className="text-3xl font-black uppercase leading-[0.92] tracking-[-0.04em] text-white sm:text-4xl md:text-5xl lg:text-6xl"
+                >
+                  {overlayTitleWords.map((word, index) => (
+                    <span
+                      key={`${word}-${index}`}
+                      aria-hidden="true"
+                      className="inline-block px-[0.125em] pb-[0.08em]"
+                    >
+                      <motion.span
+                        variants={{
+                          rest: {
+                            opacity: 0.55,
+                            y: "28%",
+                            filter: "blur(4px)",
+                          },
+                          reveal: {
+                            opacity: 1,
+                            y: "0%",
+                            filter: "blur(0px)",
+                            transition: {
+                              duration: 0.72,
+                              ease: [0.16, 1, 0.3, 1],
+                            },
+                          },
+                        }}
+                        className="inline-block"
+                      >
+                        {word}
+                      </motion.span>
+                    </span>
+                  ))}
+                </motion.h2>
               </motion.div>
             )}
 
             <div
               className={
                 hasOverlay
-                  ? "relative aspect-video w-full max-w-4xl overflow-hidden rounded-2xl border border-white/20 bg-slate-950 shadow-2xl"
+                  ? `relative aspect-video w-full max-w-4xl shrink overflow-hidden rounded-2xl border border-white/20 bg-slate-950 shadow-2xl ${
+                      immersive
+                        ? "md:max-w-[min(56rem,calc((100svh-18rem)*16/9))]"
+                        : ""
+                    }`
                   : "absolute inset-0"
               }
             >

@@ -19,7 +19,6 @@ export default function Home() {
         <HeroSection />
         <FullScreenVideoPortal
           immersive
-          showHeading={false}
           overlayEyebrow="A Cinematic Journey"
           overlayTitle="Imagination Unleashed"
           videoUrl="https://youtu.be/RdQyIS-mvcw"
@@ -28,6 +27,7 @@ export default function Home() {
         <FullScreenVideoPortal
           videoUrl="https://youtu.be/OqRClNpVqZw?si=02az8DoeQ5A5vP8L"
           thumbnailUrl="https://img.youtube.com/vi/OqRClNpVqZw/maxresdefault.jpg"
+          heading="Our Masterpieces"
           headingSuffix="in a Minute"
         />
       </SharedParticleBackground>
