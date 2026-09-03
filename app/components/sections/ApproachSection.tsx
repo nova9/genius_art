@@ -22,10 +22,9 @@ const process = [
 ] as const;
 
 const headline = [
-  "One Studio.",
-  "Three Disciplines.",
-  "Clear Thinking and",
-  "Close Collaboration.",
+  ["One Studio."],
+  ["Three Disciplines."],
+  ["Clear Thinking and", "Close Collaboration."],
 ] as const;
 
 export function ApproachSection({ isDark }: ApproachSectionProps) {
@@ -63,10 +62,11 @@ export function ApproachSection({ isDark }: ApproachSectionProps) {
         </motion.p>
 
         <div className="grid gap-14 lg:grid-cols-[0.9fr_1.45fr] lg:items-stretch lg:gap-24">
-          <h2 className="flex max-w-xl flex-col text-[clamp(2.5rem,4.4vw,4.5rem)] font-light leading-[0.98] tracking-[-0.04em]">
-            {headline.map((line, index) => (
+          <h2 className="grid max-w-xl gap-4 text-[clamp(2.5rem,4.4vw,4.5rem)] font-light leading-[0.94] tracking-[-0.04em] md:gap-5">
+            {headline.map((sentence, index) => (
               <motion.span
-                key={line}
+                key={sentence.join(" ")}
+                className="block"
                 initial={shouldReduceMotion ? false : {
                   opacity: 0.22,
                   x: index % 2 === 0 ? -42 : 42,
@@ -80,7 +80,11 @@ export function ApproachSection({ isDark }: ApproachSectionProps) {
                   ease: [0.16, 1, 0.3, 1],
                 }}
               >
-                {line}
+                {sentence.map((line) => (
+                  <span key={line} className="block">
+                    {line}
+                  </span>
+                ))}
               </motion.span>
             ))}
           </h2>
