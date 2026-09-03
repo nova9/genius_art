@@ -18,9 +18,8 @@ export default function Home() {
       <SharedParticleBackground>
         <HeroSection />
         <FullScreenVideoPortal
-          immersive
-          overlayEyebrow="A Cinematic Journey"
-          overlayTitle="Imagination Unleashed"
+          eyebrow="A Cinematic Journey"
+          heading="Imagination Unleashed"
           videoUrl="https://youtu.be/RdQyIS-mvcw"
           thumbnailUrl="https://img.youtube.com/vi/RdQyIS-mvcw/maxresdefault.jpg"
         />
