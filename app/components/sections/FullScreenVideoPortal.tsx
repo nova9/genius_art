@@ -152,7 +152,7 @@ export function FullScreenVideoPortal({
           </h2>
         </div>}
 
-        <div className={`group relative mx-auto w-full overflow-hidden border border-white/10 shadow-2xl ${
+        <div className={`group relative mx-auto w-full overflow-hidden border border-white/10 ${
           sharedParticleBackground ? "bg-transparent" : "bg-slate-950"
         } ${
           immersive
