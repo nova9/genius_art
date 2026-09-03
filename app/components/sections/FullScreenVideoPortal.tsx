@@ -59,7 +59,7 @@ export function FullScreenVideoPortal({
           <div
             className={
               hasOverlay
-                ? "absolute inset-0 z-10 flex flex-col items-center justify-center gap-5 p-4 sm:p-6 md:gap-7 md:p-8"
+                ? "absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 p-4 sm:px-6 md:gap-5 md:px-8 md:py-5"
                 : "absolute inset-0"
             }
           >
@@ -104,7 +104,7 @@ export function FullScreenVideoPortal({
                 )}
                 <motion.h2
                   aria-label={overlayTitle}
-                  className="text-3xl font-black uppercase leading-[0.92] tracking-[-0.04em] text-white sm:text-4xl md:text-5xl lg:text-6xl"
+                  className="text-3xl font-black uppercase leading-[0.94] tracking-[-0.04em] text-white sm:text-4xl md:text-5xl"
                 >
                   {overlayTitleWords.map((word, index) => (
                     <span
@@ -144,7 +144,7 @@ export function FullScreenVideoPortal({
                 hasOverlay
                   ? `relative aspect-video w-full max-w-4xl shrink overflow-hidden rounded-2xl border border-white/20 bg-slate-950 shadow-2xl ${
                       immersive
-                        ? "md:max-w-[min(56rem,calc((100svh-18rem)*16/9))]"
+                        ? "md:max-w-[min(56rem,calc((100svh-14rem)*16/9))]"
                         : ""
                     }`
                   : "absolute inset-0"

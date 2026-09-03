@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import geniusArtLogo from "../../assets/images/logo.png";
 
 const links = [
-  ["#portfolio", "Work"],
+  ["#portfolio", "Portfolio"],
   ["#capabilities", "Services"],
   ["#approach", "Approach"],
 ] as const;
