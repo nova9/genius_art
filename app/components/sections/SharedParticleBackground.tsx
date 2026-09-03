@@ -1,14 +1,12 @@
+"use client";
+
 import { useEffect, useRef, type ReactNode } from "react";
 
 interface SharedParticleBackgroundProps {
   children: ReactNode;
-  isDark: boolean;
 }
 
-export function SharedParticleBackground({
-  children,
-  isDark,
-}: SharedParticleBackgroundProps) {
+export function SharedParticleBackground({ children }: SharedParticleBackgroundProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -72,15 +70,11 @@ export function SharedParticleBackground({
         context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
 
         if (particle.glowing) {
-          context.fillStyle = isDark
-            ? `rgba(0, 240, 255, ${particle.opacity})`
-            : `rgba(30, 144, 255, ${particle.opacity})`;
+          context.fillStyle = `rgba(0, 240, 255, ${particle.opacity})`;
           context.shadowBlur = 4;
-          context.shadowColor = isDark ? "#00f0ff" : "#1e90ff";
+          context.shadowColor = "#00f0ff";
         } else {
-          context.fillStyle = isDark
-            ? `rgba(255, 255, 255, ${particle.opacity})`
-            : `rgba(15, 23, 42, ${particle.opacity / 2})`;
+          context.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
           context.shadowBlur = 0;
         }
 
@@ -124,12 +118,12 @@ export function SharedParticleBackground({
       resizeObserver.disconnect();
       visibilityObserver.disconnect();
     };
-  }, [isDark]);
+  }, []);
 
   return (
     <div
       ref={containerRef}
-      className={`shared-particle-grid relative overflow-hidden ${isDark ? "bg-slate-950" : "bg-slate-50 shared-particle-grid-light"}`}
+      className="shared-particle-grid relative overflow-hidden bg-slate-950"
     >
       <canvas
         ref={canvasRef}

@@ -3,15 +3,7 @@
 import { useEffect, useRef } from "react";
 import { Sparkles } from "lucide-react";
 
-interface HeroSectionProps {
-  isDark: boolean;
-  sharedParticleBackground?: boolean;
-}
-
-export function HeroSection({
-  isDark,
-  sharedParticleBackground = false,
-}: HeroSectionProps) {
+export function HeroSection() {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -38,9 +30,7 @@ export function HeroSection({
   }, []);
 
   return (
-    <section className={`relative min-h-[82vh] flex items-center justify-center overflow-hidden select-none ${
-      sharedParticleBackground ? "bg-transparent" : "border-b border-slate-900/60 bg-slate-950"
-    }`}>
+    <section className="relative flex min-h-[82vh] items-center justify-center overflow-hidden bg-transparent select-none">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(0,180,255,0.08),transparent_42%)]" />
 
       <div
@@ -56,7 +46,7 @@ export function HeroSection({
           <h2 className="text-5xl sm:text-7xl md:text-[5.5rem] font-display font-black tracking-tighter uppercase leading-[0.9] select-text">
             CRAFTING
             <br />
-            <span className={`block md:inline ${isDark ? "chrome-text" : "chrome-text-light"}`}>
+            <span className="chrome-text block md:inline">
               LEGENDARY
             </span>
             <br />
@@ -67,33 +57,20 @@ export function HeroSection({
           </p>
         </div>
 
-        <p className={`max-w-2xl mx-auto text-sm sm:text-base leading-relaxed ${
-          isDark ? "text-slate-400" : "text-slate-600"
-        } select-text`}>
+        <p className="mx-auto max-w-2xl text-sm leading-relaxed text-slate-400 select-text sm:text-base">
           From concept to campaign, we combine strategy, creativity and cinematic AI-driven content to build compelling brand experiences across all platforms
         </p>
 
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-          <a href="#alliance" className={`px-8 py-4 rounded-full font-sans text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 relative group overflow-hidden ${
-            isDark
-              ? "bg-white text-black hover:bg-white/90 hover:shadow-lg hover:shadow-white/10"
-              : "bg-black text-white hover:bg-black/90 hover:shadow-lg hover:shadow-black/10"
-          }`}>
+          <a href="#alliance" className="group relative overflow-hidden rounded-full bg-white px-8 py-4 font-sans text-xs font-black uppercase tracking-[0.2em] text-black transition-all duration-300 hover:bg-white/90 hover:shadow-lg hover:shadow-white/10">
             Contact Us
           </a>
-          <a href="#portfolio" className={`px-8 py-4 rounded-full font-sans text-xs font-bold tracking-[0.2em] uppercase border transition-all ${
-            isDark
-              ? "bg-white/5 border-white/20 text-white hover:bg-white hover:text-black"
-              : "bg-black/5 border-black/25 text-black hover:bg-black hover:text-white"
-          }`}>
+          <a href="#portfolio" className="rounded-full border border-white/20 bg-white/5 px-8 py-4 font-sans text-xs font-bold uppercase tracking-[0.2em] text-white transition-all hover:bg-white hover:text-black">
             Explore Masterpieces
           </a>
         </div>
       </div>
 
-      {!sharedParticleBackground && (
-        <div className="absolute bottom-0 left-0 w-full h-24 bg-linear-to-t from-slate-950 to-transparent pointer-events-none z-2" />
-      )}
     </section>
   );
 }

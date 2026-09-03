@@ -1,20 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
-import { PortfolioItem } from "../types";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import type { PortfolioItem } from "../content";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { Eye, X, Zap } from "lucide-react";
+import { Eye, X } from "lucide-react";
 import Image from "next/image";
 import { createPortal } from "react-dom";
+import { getYouTubeEmbedUrl, getYouTubeId } from "../lib/youtube";
 
 interface PortfolioShowcaseProps {
-  portfolio: PortfolioItem[];
-  isDark: boolean;
+  portfolio: readonly PortfolioItem[];
 }
 
-export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio, isDark }) => {
+export function PortfolioShowcase({ portfolio }: PortfolioShowcaseProps) {
   const shouldReduceMotion = useReducedMotion();
-  const selectedCategory = "All";
   const [selectedProject, setSelectedProject] = useState<PortfolioItem | null>(null);
-  const searchQuery = "";
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -64,49 +64,8 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
     };
   }, [selectedProject]);
 
-  const getYoutubeId = (url?: string) => {
-    if (!url) return "";
-    let videoId = "";
-    if (url.includes("youtu.be/")) {
-      videoId = url.split("youtu.be/")[1]?.split("?")[0] || "";
-    } else if (url.includes("youtube.com/watch")) {
-      const parts = url.split("?")[1] || "";
-      const params = new URLSearchParams(parts);
-      videoId = params.get("v") || "";
-    } else if (url.includes("youtube.com/embed/")) {
-      videoId = url.split("youtube.com/embed/")[1]?.split("?")[0] || "";
-    }
-    return videoId;
-  };
-
-  const getYoutubeEmbedUrl = (url?: string) => {
-    if (!url) return "";
-    let videoId = "";
-    if (url.includes("youtu.be/")) {
-      videoId = url.split("youtu.be/")[1]?.split("?")[0] || "";
-    } else if (url.includes("youtube.com/watch")) {
-      const parts = url.split("?")[1] || "";
-      const params = new URLSearchParams(parts);
-      videoId = params.get("v") || "";
-    } else if (url.includes("youtube.com/embed/")) {
-      videoId = url.split("youtube.com/embed/")[1]?.split("?")[0] || "";
-    }
-    return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0` : "";
-  };
-
-
-  // Filter projects based on matching rules
-  const filteredProjects = portfolio.filter((item) => {
-    const matchesCategory = selectedCategory === "All" || item.category === selectedCategory;
-    const matchesSearch =
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.client.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
-
   return (
-    <div className="w-full space-y-8">
+    <section id="portfolio" className="relative z-10 mx-auto w-full max-w-7xl space-y-8 px-4 py-16 md:px-8 md:py-24">
       {/* section header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-4 overflow-hidden border-b border-white/10">
         <motion.div
@@ -131,7 +90,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
               whileInView={{ x: 0 }}
               viewport={{ once: true, amount: 0.7 }}
               transition={{ duration: 0.78, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-              className={`inline-block ${isDark ? "chrome-text" : "chrome-text-light"}`}
+              className="chrome-text inline-block"
             >
               Masterpieces
             </motion.span>
@@ -141,7 +100,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.8 }}
             transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-            className={`text-xs ${isDark ? "text-slate-400" : "text-slate-600"}`}
+            className="text-xs text-slate-400"
           >
             Every project represents a tailored collaboration leveraging high-contrast textures and deep audience empathy.
           </motion.p>
@@ -154,7 +113,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
       >
         <AnimatePresence mode="popLayout">
-          {filteredProjects.map((item) => {
+          {portfolio.map((item) => {
             return (
               <motion.div
                 layout
@@ -168,18 +127,14 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
                 onMouseEnter={() => setHoveredCardId(item.id)}
                 onMouseLeave={() => setHoveredCardId(null)}
                 onClick={() => setSelectedProject(item)}
-                className={`group rounded-2xl border overflow-hidden cursor-pointer transition-all duration-300 ${
-                  isDark
-                    ? "bg-white/3 border-white/10 hover:border-white/30 hover:bg-white/10 shadow-lg"
-                    : "bg-black/1 border-black/10 hover:border-black/20 hover:bg-black/5 shadow-md"
-                } hover:-translate-y-1`}
+                className="group cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-white/3 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white/10"
               >
                 {/* Scaled/Reflective Image container with Hover details */}
                 <div className="relative h-48 overflow-hidden bg-slate-900">
                   {playingVideoId === item.id && item.videoUrl ? (
                     <>
                       <iframe
-                        src={getYoutubeEmbedUrl(item.videoUrl)}
+                        src={getYouTubeEmbedUrl(item.videoUrl)}
                         title={item.title}
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -200,7 +155,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
                   ) : hoveredCardId === item.id && item.videoUrl ? (
                     <>
                       <iframe
-                        src={`https://www.youtube.com/embed/${getYoutubeId(item.videoUrl)}?autoplay=1&mute=1&loop=1&playlist=${getYoutubeId(item.videoUrl)}&controls=0&modestbranding=1&playsinline=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&fs=0`}
+                        src={`https://www.youtube.com/embed/${getYouTubeId(item.videoUrl)}?autoplay=1&mute=1&loop=1&playlist=${getYouTubeId(item.videoUrl)}&controls=0&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3&disablekb=1&fs=0`}
                         title={item.title}
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -304,7 +259,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
                       CLIENT / PARTNER
                     </span>
                     <div className="flex items-center justify-between">
-                      <span className={`text-sm font-extrabold uppercase tracking-tight ${isDark ? "text-white" : "text-slate-900"}`}>
+                      <span className="text-sm font-extrabold uppercase tracking-tight text-white">
                         {item.client}
                       </span>
                       <span className="text-[10px] px-2 py-0.5 rounded bg-white/10 border border-white/20 text-white font-mono font-extrabold uppercase tracking-wide">
@@ -313,7 +268,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
                     </div>
                   </div>
                   <div>
-                    <p className={`text-xs ${isDark ? "text-slate-400" : "text-slate-600"}`}>
+                    <p className="text-xs text-slate-400">
                       {item.description}
                     </p>
                   </div>
@@ -323,18 +278,6 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
           })}
         </AnimatePresence>
 
-        {/* Empty state handler if nothing matches search */}
-        {filteredProjects.length === 0 && (
-          <div className="col-span-full py-16 text-center space-y-2">
-            <Zap className="h-8 w-8 text-amber-500 mx-auto animate-bounce" />
-            <h4 className="text-sm font-bold font-display text-slate-400">
-              No matching masterpiece found
-            </h4>
-            <p className="text-xs text-slate-500">
-              Check spelling or change selected service filters.
-            </p>
-          </div>
-        )}
       </motion.div>
 
       {/* DETAILED PROJECT INSPECTION DRAWER MODAL */}
@@ -365,14 +308,12 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
                   ? { duration: 0.1 }
                   : { duration: 0.42, ease: [0.16, 1, 0.3, 1] }
                 }
-                className={`relative z-10 flex h-[100svh] w-full max-w-6xl flex-col overflow-y-auto overscroll-contain shadow-[0_32px_100px_rgba(0,0,0,0.65)] sm:h-auto sm:max-h-[calc(100svh-2rem)] sm:rounded-2xl ${
-                  isDark ? "bg-slate-900 text-white" : "bg-white text-slate-950"
-                }`}
+                className="relative z-10 flex h-[100svh] w-full max-w-6xl flex-col overflow-y-auto overscroll-contain bg-slate-900 text-white shadow-[0_32px_100px_rgba(0,0,0,0.65)] sm:h-auto sm:max-h-[calc(100svh-2rem)] sm:rounded-2xl"
               >
                 <div className="relative aspect-video w-full shrink-0 overflow-hidden bg-black">
                   {selectedProject.videoUrl ? (
                     <iframe
-                      src={getYoutubeEmbedUrl(selectedProject.videoUrl)}
+                      src={getYouTubeEmbedUrl(selectedProject.videoUrl)}
                       title={`${selectedProject.title} video`}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowFullScreen
@@ -414,10 +355,8 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
                       >
                         {selectedProject.title}
                       </h4>
-                      <div className={`flex flex-wrap items-center gap-x-3 gap-y-1 text-sm ${
-                        isDark ? "text-slate-400" : "text-slate-600"
-                      }`}>
-                        <span className={isDark ? "font-semibold text-white" : "font-semibold text-slate-950"}>
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-400">
+                        <span className="font-semibold text-white">
                           {selectedProject.client}
                         </span>
                         <span aria-hidden="true" className="text-cyan-400">/</span>
@@ -425,9 +364,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
                       </div>
                     </div>
 
-                    <p className={`max-w-[70ch] text-sm leading-6 sm:text-base sm:leading-7 ${
-                      isDark ? "text-slate-300" : "text-slate-700"
-                    }`}>
+                    <p className="max-w-[70ch] text-sm leading-6 text-slate-300 sm:text-base sm:leading-7">
                       {selectedProject.description}
                     </p>
                   </div>
@@ -435,11 +372,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
                   <button
                     type="button"
                     onClick={() => setSelectedProject(null)}
-                    className={`inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400 md:w-auto ${
-                      isDark
-                        ? "bg-white/10 text-white hover:bg-white/15"
-                        : "bg-slate-100 text-slate-950 hover:bg-slate-200"
-                    }`}
+                    className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-white/10 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400 md:w-auto"
                   >
                     <X className="h-4 w-4" aria-hidden="true" />
                     Close viewer
@@ -452,6 +385,6 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ portfolio,
         document.body,
       )}
 
-    </div>
+    </section>
   );
-};
+}

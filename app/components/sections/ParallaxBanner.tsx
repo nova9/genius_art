@@ -2,11 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-interface ParallaxBannerProps {
-  isDark: boolean;
-}
-
-export function ParallaxBanner({ isDark }: ParallaxBannerProps) {
+export function ParallaxBanner() {
   const sectionRef = useRef<HTMLElement>(null);
   const forwardTextRef = useRef<HTMLDivElement>(null);
   const reverseTextRef = useRef<HTMLDivElement>(null);
@@ -15,15 +11,14 @@ export function ParallaxBanner({ isDark }: ParallaxBannerProps) {
     const section = sectionRef.current;
     const forwardText = forwardTextRef.current;
     const reverseText = reverseTextRef.current;
-    if (!section || !forwardText || !reverseText) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!section || !forwardText || !reverseText || reduceMotion) return;
 
     let animationId = 0;
 
     const updateParallax = () => {
       const bounds = section.getBoundingClientRect();
-      const viewportCenter = window.innerHeight / 2;
-      const sectionCenter = bounds.top + bounds.height / 2;
-      const distanceFromCenter = viewportCenter - sectionCenter;
+      const distanceFromCenter = window.innerHeight / 2 - (bounds.top + bounds.height / 2);
       const offset = Math.max(-180, Math.min(180, distanceFromCenter * 0.18));
 
       forwardText.style.transform = `translate3d(${offset}px, 0, 0)`;
@@ -31,44 +26,36 @@ export function ParallaxBanner({ isDark }: ParallaxBannerProps) {
       animationId = 0;
     };
 
-    const requestParallaxUpdate = () => {
-      if (!animationId) {
-        animationId = requestAnimationFrame(updateParallax);
-      }
+    const requestUpdate = () => {
+      if (!animationId) animationId = requestAnimationFrame(updateParallax);
     };
 
     updateParallax();
-    window.addEventListener("scroll", requestParallaxUpdate, { passive: true });
-    window.addEventListener("resize", requestParallaxUpdate);
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
 
     return () => {
       if (animationId) cancelAnimationFrame(animationId);
-      window.removeEventListener("scroll", requestParallaxUpdate);
-      window.removeEventListener("resize", requestParallaxUpdate);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
     };
   }, []);
 
   return (
     <section
       ref={sectionRef}
-      className={`relative py-20 overflow-hidden border-y pointer-events-none ${
-        isDark ? "bg-white/1 border-white/5" : "bg-black/1 border-black/5"
-      }`}
+      aria-label="Imagination Unleashed"
+      className="pointer-events-none relative overflow-hidden border-y border-white/5 bg-white/1 py-20"
     >
       <div
         ref={forwardTextRef}
-        className={`whitespace-nowrap select-none font-display font-black text-6xl sm:text-9xl tracking-[0.2em] uppercase will-change-transform ${
-          isDark ? "text-white/3" : "text-black/3"
-        }`}
+        className="whitespace-nowrap text-6xl font-black uppercase tracking-[0.2em] text-white/3 will-change-transform select-none sm:text-9xl"
       >
         IMAGINATION UNLEASHED &bull; IMAGINATION UNLEASHED &bull; IMAGINATION UNLEASHED
       </div>
-
       <div
         ref={reverseTextRef}
-        className={`whitespace-nowrap select-none font-display font-black text-3xl sm:text-5xl tracking-[0.25em] pt-6 uppercase will-change-transform ${
-          isDark ? "text-white/5" : "text-black/5"
-        }`}
+        className="whitespace-nowrap pt-6 text-3xl font-black uppercase tracking-[0.25em] text-white/5 will-change-transform select-none sm:text-5xl"
       >
         IMAGINATION UNLEASHED &bull; IMAGINATION UNLEASHED &bull; IMAGINATION UNLEASHED
       </div>

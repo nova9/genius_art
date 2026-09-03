@@ -2,10 +2,6 @@
 
 import { motion, useReducedMotion } from "motion/react";
 
-interface ApproachSectionProps {
-  isDark: boolean;
-}
-
 const process = [
   {
     title: "Discover",
@@ -27,17 +23,13 @@ const headline = [
   ["Clear Thinking and", "Close Collaboration."],
 ] as const;
 
-export function ApproachSection({ isDark }: ApproachSectionProps) {
+export function ApproachSection() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
     <section
       id="approach"
-      className={`relative overflow-hidden transition-colors duration-500 ${
-        isDark
-          ? "bg-[#070b10] text-white"
-          : "bg-white text-slate-950"
-      }`}
+      className="relative overflow-hidden bg-[#070b10] text-white"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_45%,rgba(0,180,255,0.07),transparent_35%)]" />
 
@@ -47,16 +39,14 @@ export function ApproachSection({ isDark }: ApproachSectionProps) {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.8 }}
           transition={{ duration: 0.55, ease: "easeOut" }}
-          className={`mb-10 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] ${
-            isDark ? "text-white/55" : "text-black/55"
-          }`}
+          className="mb-10 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/55"
         >
           <motion.span
             initial={shouldReduceMotion ? false : { scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55, delay: 0.1, ease: "easeOut" }}
-            className={`h-px w-7 origin-left ${isDark ? "bg-white/45" : "bg-black/45"}`}
+            className="h-px w-7 origin-left bg-white/45"
           />
           How we work
         </motion.p>
@@ -117,11 +107,7 @@ export function ApproachSection({ isDark }: ApproachSectionProps) {
                     className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-cyan-300 transition-transform duration-300 ease-out group-hover:scale-x-100"
                   />
                 </h3>
-                <p
-                  className={`max-w-2xl text-[15px] leading-7 md:text-base ${
-                    isDark ? "text-white/58" : "text-black/58"
-                  }`}
-                >
+                <p className="max-w-2xl text-[15px] leading-7 text-white/58 md:text-base">
                   {copy}
                 </p>
               </motion.article>
